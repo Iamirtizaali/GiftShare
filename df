@@ -1,0 +1,57 @@
+[33mcommit 86cf57f1a469142f88fa17c446388898ad601c83[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 303d9fd cc3db86
+Author: Iamirtizaali <aliirtiza859@gmail.com>
+Date:   Sun Dec 8 15:10:08 2024 +0500
+
+    Merge branch 'master' of https://github.com/Iamirtizaali/GiftShare
+
+[33mcommit 303d9fd7c8715d93d3fc85e75f83363f20537366[m
+Author: Iamirtizaali <aliirtiza859@gmail.com>
+Date:   Sun Dec 8 15:08:16 2024 +0500
+
+    minor changes
+
+[33mcommit cc3db86d84dd2c6d608e55b39ee4e8f9bc973d75[m
+Author: abdul-rafeh-91 <abdulrafeh0091@gmail.com>
+Date:   Sun Dec 8 15:06:45 2024 +0500
+
+    hello bhai
+
+[33mcommit 6537949ec3dcd08f375ea5323530993efd69916a[m
+Author: abdul-rafeh-91 <abdulrafeh0091@gmail.com>
+Date:   Sun Dec 8 12:54:28 2024 +0500
+
+    updated data
+
+[33mcommit cb313644411a1f684f335ff6c63328717dca3d84[m
+Author: abdul-rafeh-91 <abdulrafeh0091@gmail.com>
+Date:   Sun Dec 8 12:54:10 2024 +0500
+
+    sign up script added
+
+[33mcommit c5f1759c10c8004b12b3e17dd5d34501315cef90[m
+Merge: b560dd0 fa52100
+Author: Irtiza Ali <142350791+Iamirtizaali@users.noreply.github.com>
+Date:   Sun Dec 8 12:20:56 2024 +0500
+
+    Merge pull request #1 from Iamirtizaali/rafeh
+    
+    front end code added
+
+[33mcommit b560dd036963699e6df2c3089291b9a5384fd773[m
+Author: Iamirtizaali <aliirtiza859@gmail.com>
+Date:   Sun Dec 8 12:12:03 2024 +0500
+
+    connection string added
+
+[33mcommit fa52100fe357a96c77f11a96129ddb0409144b85[m[33m ([m[1;31morigin/rafeh[m[33m)[m
+Author: abdul-rafeh-91 <abdulrafeh0091@gmail.com>
+Date:   Sun Dec 8 12:06:13 2024 +0500
+
+    front end code added
+
+[33mcommit b4d931211e6a583761ab974d9f6ceb3ef086c9c5[m
+Author: Iamirtizaali <aliirtiza859@gmail.com>
+Date:   Sun Dec 8 11:48:33 2024 +0500
+
+    code pushed
