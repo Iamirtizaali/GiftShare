@@ -82,3 +82,13 @@ exports.userLogin = async (req, res) => {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
+
+exports.signuppage = async (req, res) => {
+  try {
+    res.render('signup', { title: 'Sign Up' }
+    );
+  } catch (error) {
+    console.error('Error rendering signup page:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
