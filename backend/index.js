@@ -13,7 +13,7 @@ const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const stripe = require('stripe')("sk_test_51PdoPmRsi25iz5JVRePIfmgFPa9Xg6zZka6DCLBQVKbc2HQI0Ni9EKuVJuZDsNU1wiB5Vjp5rhcKa8NXustJz6SC00G5ww7IUZ");
 // Add CORS middleware
-app.use(cors({ origin: "*" })); // Configure CORS with options 
+app.use(cors({ origin: "*" })); // Configure CORS with options dfsd
 app.use(fileUpload());
 
 app.use(bodyParser.json());
