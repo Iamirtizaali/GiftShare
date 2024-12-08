@@ -1,4 +1,4 @@
-/* dashboard.css */
+/* donate-item.css */
 
 * {
     margin: 0;
@@ -16,8 +16,6 @@
   
   .dashboard-container {
     display: flex;
-    flex-direction: row;
-    height: 100%;
   }
   
   .sidebar {
@@ -61,70 +59,69 @@
     padding: 30px;
   }
   
-  header h1 {
-    font-size: 32px;
+  .page-header h1 {
+    font-size: 28px;
+    color: #28a745;
     margin-bottom: 10px;
   }
   
-  header p {
-    color: #555;
+  .page-header p {
     font-size: 18px;
+    color: #555;
   }
   
-  .overview {
+  .donation-form h2 {
+    font-size: 22px;
+    color: #28a745;
+    margin-top: 20px;
+  }
+  
+  form {
+    margin-top: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .form-group textarea {
+    resize: none;
+  }
+  
+  .form-row {
     display: flex;
     justify-content: space-between;
-    margin: 30px 0;
+    gap: 20px;
   }
   
-  .card {
-    background-color: #28a745;
+  .submit-button {
+    background-color: #ffc107;
     color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    flex: 1;
-    margin: 0 10px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
   }
   
-  .card h2 {
-    font-size: 20px;
-  }
-  
-  .card p {
-    font-size: 24px;
-    margin-top: 10px;
-  }
-  
-  .pickup-delivery h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  table th,
-  table td {
-    padding: 10px 15px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  table th {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
-  table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  table tbody tr:hover {
-    background-color: #ddd;
+  .submit-button:hover {
+    background-color: #e0a800;
   }
   
   @media (max-width: 768px) {
@@ -137,16 +134,8 @@
       text-align: center;
     }
   
-    .main-content {
-      padding: 15px;
-    }
-  
-    .overview {
+    .form-row {
       flex-direction: column;
-    }
-  
-    .card {
-      margin: 10px 0;
     }
   }
   

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate Item</title>
+  <link rel="stylesheet" href="../css/donate-item.css">
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>GiftShare</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li class="active"><a href="#">Donate Item</a></li>
+          <li><a href="#">Donation History</a></li>
+          <li><a href="#">Account Settings</a></li>
+          <li><a href="#">Log Out</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Turn Your Excess into Someone’s Necessity</h1>
+        <p>Donate your items and bring relief to those who need them</p>
+      </header>
+
+      <section class="donation-form">
+        <h2>Items Details</h2>
+        <form>
+          <div class="form-group">
+            <label for="item-name">Item Name</label>
+            <input type="text" id="item-name" placeholder="Enter Item Name" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" required>
+                <option value="Clothing">Clothing</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Electronics">Electronics</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="condition">Condition</label>
+              <select id="condition" required>
+                <option value="New">New</option>
+                <option value="Used">Used</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" rows="3" placeholder="Describe the item"></textarea>
+          </div>
+
+          <h2>Photos</h2>
+          <div class="form-group">
+            <label for="images">Upload Images</label>
+            <input type="file" id="images" multiple>
+          </div>
+
+          <h2>Pickup/Drop Off Details</h2>
+          <div class="form-group">
+            <label for="pickup-option">Pickup/Drop-off Option</label>
+            <select id="pickup-option" required>
+              <option value="Drop-off">Drop-off at designated location</option>
+              <option value="Pickup">Pickup from my location</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address (if pickup is chosen)</label>
+            <input type="text" id="address" placeholder="Enter your address">
+          </div>
+
+          <div class="form-group">
+            <label for="pickup-date">Preferred Pickup Date</label>
+            <input type="date" id="pickup-date" required>
+          </div>
+
+          <button type="submit" class="submit-button">Submit Donation</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+</html>

@@ -5,338 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Design</title>
-    <style>
-        body {
-            font-family: 'Times New Roman', Times, serif;
-            scrollbar-width: none;
-            overflow: hidden;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .body::-webkit-scrollbar {
-            display: none;
-            /* Hide scrollbar in WebKit browsers */
-        }
-
-        .container {
-            width: 100vw;
-            height: 100vh;
-            overflow-y: scroll;
-        }
-
-        .nav {
-            width: 100%;
-            height: 10vh;
-            background-color: black;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        .nav img {
-            margin: 0;
-        }
-
-        .menu {
-            display: flex;
-            position: relative;
-            align-items: center;
-            height: 100%;
-        }
-
-        .menu a {
-            position: relative;
-            text-decoration: none;
-            text-transform: uppercase;
-            text-align: center;
-            color: white;
-            font-size: 14px;
-            margin: 0 20px;
-            padding: 10px 15px;
-            z-index: 1;
-            transition: color 0.3s;
-            font-family: 'Times New Roman', Times, serif;
-        }
-
-        .menu a:hover {
-            color: white;
-        }
-
-        .menu .animation {
-            position: absolute;
-            top: 6px;
-            left: 7px;
-            width: 100px;
-            height: 80%;
-            background-color: #FFC107;
-            border-radius: 8px;
-            z-index: 0;
-            transition: all 0.5s ease;
-        }
-
-        .menu a:nth-child(1):hover~.animation {
-            width: 100px;
-            left: 7px;
-            text-align: center;
-        }
-
-        .menu a:nth-child(2):hover~.animation {
-            width: 120px;
-            left: 121px;
-            text-align: center;
-        }
-
-        .menu a:nth-child(3):hover~.animation {
-            width: 130px;
-            left: 262px;
-            text-align: center;
-        }
-
-        .btn,
-        .request {
-            width: 6.5em;
-            height: 2.3em;
-            margin: 0.5em;
-            border: none;
-            border-radius: 0.625em;
-            font-size: 15px;
-            font-weight: 200;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            font-family: 'Times New Roman', Times, serif;
-        }
-
-        .btn {
-            background: #038C29;
-            color: white;
-        }
-
-        .btn:hover {
-            color: #038C29;
-            font-weight: bold;
-        }
-
-        .btn:after,
-        .request:after {
-            content: "";
-            background: white;
-            position: absolute;
-            z-index: -1;
-            left: -20%;
-            right: -20%;
-            top: 0;
-            bottom: 0;
-            transform: skewX(-45deg) scale(0, 1);
-            transition: all 0.5s;
-        }
-
-        .btn:hover:after,
-        .request:hover:after {
-            transform: skewX(-45deg) scale(1, 1);
-            -webkit-transition: all 0.5s;
-            transition: all 1s;
-        }
-
-        .request {
-            background: #FFC107;
-            color: white;
-        }
-
-        .request:hover {
-            color: #FFC107;
-            font-weight: bold;
-        }
-
-        .main {
-            width: 100%;
-            height: 80vh;
-            background-image: url("../../Images/Main.jpg");
-            background-position: cover;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .overlay {
-            width: 100%;
-            height: 80vh;
-            background-color: rgb(0, 0, 0, 0.7);
-            color: white;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .overlay h1 {
-            margin-left: 20px;
-            margin-top: 120px;
-            font-size: 70px;
-        }
-
-        .overlay p {
-            margin-top: 20px;
-            margin-left: 20px;
-            font-size: 30px;
-        }
-
-        .buttons {
-            margin-left: 18px;
-            margin-top: 20px;
-            display: flex;
-        }
-
-        .donate {
-            height: 50px;
-        }
-
-        .request {
-            height: 50px;
-        }
-
-        .intro {
-            width: 100%;
-            height: 300px;
-            display: flex;
-            border: 1px solid black;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        .image {
-            width: 280px;
-            height: 280px;
-            background-image: url("../../Images/Home\ Page\ Main.jpg");
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            border-radius: 50%;
-            /* Makes it a circle */
-            overflow: hidden;
-            margin-left: 100px;
-
-        }
-
-        .txt {
-            width: 50%;
-            height: 280px;
-            font-size: 18px;
-            /* height: 300px;    */
-            border: 1px solid black;
-            /* padding: 20px; */
-            margin-left: 100px;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .wrapper {
-            display: inline-flex;
-            list-style: none;
-            height: 120px;
-            width: 100%;
-            padding-top: 40px;
-            font-family: "Poppins", sans-serif;
-            justify-content: center;
-        }
-
-        .wrapper .icon {
-            position: relative;
-            background: #fff;
-            border-radius: 50%;
-            margin: 10px;
-            width: 50px;
-            height: 50px;
-            font-size: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .wrapper .tooltip {
-            position: absolute;
-            top: 0;
-            font-size: 14px;
-            background: #fff;
-            color: #fff;
-            padding: 5px 8px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .wrapper .tooltip::before {
-            position: absolute;
-            content: "";
-            height: 8px;
-            width: 8px;
-            background: #fff;
-            bottom: -3px;
-            left: 50%;
-            transform: translate(-50%) rotate(45deg);
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .wrapper .icon:hover .tooltip {
-            top: -45px;
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-        .wrapper .icon:hover span,
-        .wrapper .icon:hover .tooltip {
-            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
-        }
-
-        .wrapper .facebook:hover,
-        .wrapper .facebook:hover .tooltip,
-        .wrapper .facebook:hover .tooltip::before {
-            background: #1877f2;
-            color: #fff;
-        }
-
-        .wrapper .twitter:hover,
-        .wrapper .twitter:hover .tooltip,
-        .wrapper .twitter:hover .tooltip::before {
-            background: #1da1f2;
-            color: #fff;
-        }
-
-        .wrapper .instagram:hover,
-        .wrapper .instagram:hover .tooltip,
-        .wrapper .instagram:hover .tooltip::before {
-            background: #e4405f;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body>
@@ -379,8 +48,8 @@
                 time.
             </div>
         </div>
+        <h1 id="work-header">How it works</h1>
         <div class="work">
-            <h1>How it works</h1>
             <div class="list">
                 <img src="../Images/Goods.jpg" width="25px">
                 <h3>List Your Unused Goods</h3>
@@ -397,8 +66,8 @@
                 <p>Items are collected, managed, and delivered to recipients.</p>
             </div>
         </div>
+        <h1 id="category-header">Browse by Category</h1>
         <div class="category">
-            <h1>Browse by Category</h1>
             <div class="clothing">
                 <img src="../Images/Clothing.jpg" width="25px" alt="">
                 <h3>Clothing</h3>
@@ -426,43 +95,44 @@
         </div>
 
         <div class="banner">
-            <h1>Your Generosity in Action</h1>
-            <div class="first">
-                <h2>5000+</h2>
-                <p>Items Donated</p>
-            </div>
-            <div class="second">
-                <h2>2500+</h2>
-                <p>Families Helped</p>
-            </div>
-            <div class="third">
-                <h2>300+</h2>
-                <p>Cities Impacted</p>
+            <h1 id="banner-header">Your Generosity in Action</h1>
+            <div class="banner-items">
+                <div class="first">
+                    <h2>5000+</h2>
+                    <p>Items Donated</p>
+                </div>
+                <div class="second">
+                    <h2>2500+</h2>
+                    <p>Families Helped</p>
+                </div>
+                <div class="third">
+                    <h2>300+</h2>
+                    <p>Cities Impacted</p>
+                </div>    
             </div>
         </div>
 
+        <h1 id="community-header">What Our Community Says</h1>
         <div class="community">
-            <h1>What Our Community Says</h1>
             <div class="donor-says">
                 <div class="donor-img">
 
                 </div>
                 <div class="donor-txt">
-                    Donor: “I never realized how much impact my unused items could have until I joined Gift Share.”
+                    <b>Donor:</b> “I never realized how much impact my unused items could have until I joined Gift Share.”
                 </div>
             </div>
             <div class="recipient-says">
-                <div class="recipient-img">
-
-                </div>
                 <div class="recipient-txt">
-                    Recipient: “Receiving essential items has changed my life. I’m so grateful for kindness shared
-                    through this platform”
+                    <b>Recipient:</b> “Receiving essential items has changed my life. I’m so grateful for kindness shared through this platform”
+                </div>
+                <div class="recipient-img">
+                        
                 </div>
             </div>
         </div>
 
-        <div class="footer">
+       <div class="footer">
             <div class="left-foot">
                 <h1>Gift Share</h1>
                 <p>&#169; 2024 Gift Share. All rights reserved.</p>
@@ -513,7 +183,7 @@
         signupButton.addEventListener('click', () => {
             window.location.href = 'signup.html';
         });
-    </script>
+    </script> 
 
 
 
