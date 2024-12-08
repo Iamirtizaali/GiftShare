@@ -19,10 +19,12 @@ app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(express.static(path.join("D:/SE study material 3rd semester/SE Semester Project/GiftShare/frontend/html")));
+app.use(express.static(path.join("D:/SE study material 3rd semester/SE Semester Project/GiftShare/frontend")));
+app.use(express.static("D:/SE study material 3rd semester/SE Semester Project/GiftShare/Images"));
+app.use( express.static("D:/SE study material 3rd semester/SE Semester Project/GiftShare/frontend/html"));
 //console.log(__dirname, "../backend/public");
 const server = createServer(app);
-
+console.log(__dirname, "..\frontend");
 const io = new Server(server, {
   cors: { origin: "*" },
   maxHttpBufferSize: 1e8,
@@ -47,12 +49,11 @@ app.use('/api/admin', adminRouter);
 // });
 
 
-app.use("/", express.static(path.join(__dirname, "Builds/user")));
 
-//If a user accesses /admin (or any subpath under /admin), serve the index.html from the admin build
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "Builds/user", "index.html"));
-});
+// //If a user accesses /admin (or any subpath under /admin), serve the index.html from the admin build
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "Builds/user", "index.html"));
+// });
 
 
 server.listen(process.env.PORT, () => {
