@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Times New Roman", Times, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.main-container {
+    display: flex;
+    width: 60%;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.form-container {
+    flex: 1;
+    padding: 30px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+p {
+    color: #555;
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label[for="phone"],
+label[for="address"] {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    /* font-weight: bold; */
+    margin-left: 30px;
+}
+
+label[for="receiver"],
+label[for="donor"] {
+    margin-top: 15px;
+    margin-bottom: 12px;
+    /* font-weight: bold; */
+    /* margin-left: 30px; */
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    width: 80%;
+    margin-left: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.radio-group,
+.checkbox-group {
+    margin-left: 30px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.radio-group label,
+.checkbox-group label {
+    font-size: 14px;
+}
+
+.signup-button {
+    width: 80%;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 30px;
+    border: 2px solid #038C29;
+    border-radius: 0.625em;
+    font-size: 15px;
+    font-weight: 200;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.signup-button {
+    background: #038C29;
+    color: white;
+}
+
+.signup-button:hover {
+    color: #038C29;
+    font-weight: bolder;
+}
+
+.signup-button:after {
+    content: "";
+    background: white;
+    position: absolute;
+    z-index: -1;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.5s;
+}
+
+.signup-button:hover:after {
+    transform: skewX(-45deg) scale(1, 1);
+    -webkit-transition: all 0.5s;
+    transition: all 1s;
+}
+
+.image-container {
+    flex: 1;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .image-container {
+        display: none;
+    }
+
+    .checkbox-group label a {
+        text-decoration: underline;
+    }
+}

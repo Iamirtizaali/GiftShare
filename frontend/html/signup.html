@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../css/signup.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="image-section">
+            <img src="../../Images/Signup.jpg" alt="Happy children">
+        </div>
+        <div class="form-section">
+            <h2>Sign Up</h2>
+            <form action="#" method="POST" id="signupForm">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="name" name="full-name" placeholder="Enter your full name" required>
+
+                <label for="email">E-mail Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+
+                <button type="submit" class="login-button">Next</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Get form and input elements
+        const signupForm = document.getElementById('signupForm');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const errorMessage = document.getElementById('error-message');
+
+        // Add event listener for form submission
+        signupForm.addEventListener('submit', function (event) {
+            // Prevent form submission if passwords don't match
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                event.preventDefault();
+                errorMessage.style.display = 'block'; // Show error message
+            } else {
+                errorMessage.style.display = 'none'; // Hide error message
+
+                // Prepare data to send to the backend (only one password)
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    password: passwordInput.value // Only send password
+                };
+
+                // Optionally store the data in local storage
+                localStorage.setItem('formData', JSON.stringify(formData));
+            }
+        });
+    </script>
+
+</body>
+
+</html>
