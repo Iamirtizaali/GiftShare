@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donor Dashboard</title>
   <link rel="stylesheet" href="../css/donor dashboard.css">
+  <script defer src="../js/donor_dashboard.js"></script>
 </head>
 
 <body>
@@ -16,11 +17,11 @@
       </div>
       <nav>
         <ul>
-          <li class="active"><a href="#">Dashboard</a></li>
-          <li><a href="#">Donate Item</a></li>
-          <li><a href="#">Donation History</a></li>
-          <li><a href="#">Account Settings</a></li>
-          <li><a href="#">Log Out</a></li>
+          <li class="active"><a href="#" id="dashboardBtn">Dashboard</a></li>
+          <li><a href="#" id="donateItemBtn">Donate Item</a></li>
+          <li><a href="#" id="donationHistoryBtn">Donation History</a></li>
+          <li><a href="#" id="accountSettingsBtn">Account Settings</a></li>
+          <li><a href="#" id="logoutBtn">Log Out</a></li>
         </ul>
       </nav>
     </aside>
@@ -34,15 +35,15 @@
       <section class="overview">
         <div class="card">
           <h2>Total Donations</h2>
-          <p>2 Items</p>
+          <p id="totalDonations">Loading...</p>
         </div>
         <div class="card">
           <h2>Pending Pickups</h2>
-          <p>2 Items</p>
+          <p id="pendingPickups">Loading...</p>
         </div>
         <div class="card">
           <h2>Families Helped</h2>
-          <p>1 Family Supported</p>
+          <p id="familiesHelped">Loading...</p>
         </div>
       </section>
 
@@ -56,22 +57,108 @@
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Blanket</td>
-              <td>2024-10-14</td>
-              <td>Scheduled</td>
-            </tr>
-            <tr>
-              <td>Winter Coat</td>
-              <td>2024-10-16</td>
-              <td>In Transit</td>
-            </tr>
+          <tbody id="pickupDeliveryTable">
+            <!-- Dynamic rows will be added here -->
           </tbody>
         </table>
       </section>
     </main>
   </div>
+  <!-- Confirmation Box -->
+  <!-- Confirmation Box -->
+  <div id="logoutConfirmation" class="confirmation-box" style="display: none;">
+    <div class="confirmation-content">
+      <p>Are you sure you want to leave?</p>
+      <button id="confirmLogout" class="btn-confirm">Yes</button>
+      <button id="cancelLogout" class="btn-cancel">No</button>
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const dashboardBtn = document.getElementById("dashboardBtn");
+      const donateItemBtn = document.getElementById("donateItemBtn");
+      const donationHistoryBtn = document.getElementById("donationHistoryBtn");
+      const accountSettingsBtn = document.getElementById("accountSettingsBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      // Sample API endpoint for fetching donor data
+      const apiEndpoint = "http://localhost:3000/api/donor-history";
+
+      // Fetch and populate data
+      async function fetchAndPopulateData() {
+        try {
+          const response = await fetch(apiEndpoint);
+          const data = await response.json();
+
+          // Populate account holder's name
+          document.getElementById("accountHolderName").innerText = data.accountHolderName || "Donor";
+
+          // Populate overview section
+          document.getElementById("totalDonations").innerText = `${data.totalDonations} Items`;
+          document.getElementById("pendingPickups").innerText = `${data.pendingPickups} Items`;
+          document.getElementById("familiesHelped").innerText = `${data.familiesHelped} Families Supported`;
+
+          // Populate table
+          const tableBody = document.getElementById("pickupDeliveryTable");
+          tableBody.innerHTML = ""; // Clear any existing rows
+
+          data.upcomingPickups.forEach((pickup) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+          <td>${pickup.item}</td>
+          <td>${pickup.date}</td>
+          <td>${pickup.status}</td>
+        `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      // Button Navigation (Simulate page changes)
+      dashboardBtn.addEventListener("click", () => alert("Dashboard Page"));
+      donateItemBtn.addEventListener("click", () => alert("Donate Item Page"));
+      donationHistoryBtn.addEventListener("click", () => alert("Donation History Page"));
+      accountSettingsBtn.addEventListener("click", () => alert("Account Settings Page"));
+      logoutBtn.addEventListener("click", () => alert("Logged Out"));
+
+      // Load data on page load
+      fetchAndPopulateData();
+    });
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const logoutBtn = document.getElementById("logoutBtn");
+      const logoutConfirmation = document.getElementById("logoutConfirmation");
+      const confirmLogout = document.getElementById("confirmLogout");
+      const cancelLogout = document.getElementById("cancelLogout");
+
+      // Show confirmation box and blur the screen
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent default link action
+        document.body.classList.add("blur"); // Add blur effect
+        logoutConfirmation.style.display = "flex"; // Show the confirmation box
+      });
+
+      // Handle "Yes" button click
+      confirmLogout.addEventListener("click", () => {
+        document.body.classList.remove("blur"); // Remove blur (optional before navigation)
+        window.location.href = "index.html"; // Redirect to index.html
+      });
+
+      // Handle "No" button click
+      cancelLogout.addEventListener("click", () => {
+        document.body.classList.remove("blur"); // Remove blur effect
+        logoutConfirmation.style.display = "none"; // Hide the confirmation box
+      });
+    });
+
+
+  </script>
+
 </body>
 
 </html>

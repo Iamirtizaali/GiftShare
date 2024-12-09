@@ -1,152 +1,220 @@
 /* dashboard.css */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.sidebar {
+  background-color: #333333;
+  color: #fff;
+  width: 20%;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.sidebar .logo h2 {
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li.active a {
+  background-color: #FFC107;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+header h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+header p {
+  color: #555;
+  font-size: 18px;
+}
+
+.overview {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+
+.card {
+  background-color: #038C29;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 20px;
+}
+
+.card p {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.pickup-delivery h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 10px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: #038C29;
+  color: #fff;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tbody tr:hover {
+  background-color: #ddd;
+}
+
+/* Apply blur effect */
+/* body.blur {
+  filter: blur(5px);
+  pointer-events: none;
+  /* Disable clicks on the blurred area */
+  /* user-select: none; */
+  /* Prevent selection in the blurred area */
+/* } */ 
+
+/* Confirmation Box Styling */
+.confirmation-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 10px rgb(255, 255, 255, 1);
+  /* Semi-transparent black */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirmation-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.confirmation-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.btn-confirm,
+.btn-cancel {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* .btn-cancel:hover,
+.btn-confirm:hover {
+  opacity: 0.8;
+  b
+  transition: opacity 0.3s ease;
+} */
+
+.btn-confirm {
+  background-color: #dc3545;
+  color: white;
+  margin-right: 10px;
+}
+
+.btn-cancel {
+  background-color: #28a745;
+  color: white;
+}
+
+
+@media (max-width: 768px) {
   .dashboard-container {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
+    flex-direction: column;
   }
-  
+
   .sidebar {
-    background-color: #333;
-    color: #fff;
-    width: 20%;
-    padding: 20px;
-    min-height: 100vh;
-  }
-  
-  .sidebar .logo h2 {
-    font-size: 24px;
-    margin-bottom: 40px;
-  }
-  
-  .sidebar nav ul {
-    list-style: none;
-  }
-  
-  .sidebar nav ul li {
-    margin: 15px 0;
-  }
-  
-  .sidebar nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar nav ul li a:hover,
-  .sidebar nav ul li.active a {
-    background-color: #ffc107;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 30px;
-  }
-  
-  header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-  
-  header p {
-    color: #555;
-    font-size: 18px;
-  }
-  
-  .overview {
-    display: flex;
-    justify-content: space-between;
-    margin: 30px 0;
-  }
-  
-  .card {
-    background-color: #28a745;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    flex: 1;
-    margin: 0 10px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card h2 {
-    font-size: 20px;
-  }
-  
-  .card p {
-    font-size: 24px;
-    margin-top: 10px;
-  }
-  
-  .pickup-delivery h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  table {
     width: 100%;
-    border-collapse: collapse;
+    text-align: center;
   }
-  
-  table th,
-  table td {
-    padding: 10px 15px;
-    text-align: left;
-    border: 1px solid #ddd;
+
+  .main-content {
+    padding: 15px;
   }
-  
-  table th {
-    background-color: #28a745;
-    color: #fff;
+
+  .overview {
+    flex-direction: column;
   }
-  
-  table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+
+  .card {
+    margin: 10px 0;
   }
-  
-  table tbody tr:hover {
-    background-color: #ddd;
-  }
-  
-  @media (max-width: 768px) {
-    .dashboard-container {
-      flex-direction: column;
-    }
-  
-    .sidebar {
-      width: 100%;
-      text-align: center;
-    }
-  
-    .main-content {
-      padding: 15px;
-    }
-  
-    .overview {
-      flex-direction: column;
-    }
-  
-    .card {
-      margin: 10px 0;
-    }
-  }
-  
+}
