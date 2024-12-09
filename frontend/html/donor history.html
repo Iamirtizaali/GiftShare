@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation History</title>
+    <link rel="stylesheet" href="../css/donor hostory.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">GiftShare</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Donate Item</a></li>
+                    <li><a href="#" class="active">Donation History</a></li>
+                    <li><a href="#">Notifications</a></li>
+                    <li><a href="#">Account Settings</a></li>
+                    <li><a href="#">Log Out</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="mobile-header">
+            <div class="logo">GiftShare</div>
+            <button id="menu-toggle" class="menu-icon">&#9776;</button>
+        </div>
+        <main>
+            <header>
+                <nav>
+                    <a href="#">Home</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact Us</a>
+                </nav>
+            </header>
+            <section class="history">
+                <h1>Your Donation History</h1>
+                <p>Track your past contributions and see the impact you’ve made.</p>
+                <form class="filter-form">
+                    <input type="text" placeholder="Search by item name or date">
+                    <button type="button" class="filter-btn">Filter</button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024/10/2</td>
+                            <td>Blanket</td>
+                            <td class="status delivered">Delivered</td>
+                            <td><button class="view-btn">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>2024/11/5</td>
+                            <td>Books</td>
+                            <td class="status pending">Pending Pickup</td>
+                            <td><button class="view-btn">View Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
