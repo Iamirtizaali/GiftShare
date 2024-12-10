@@ -12,12 +12,11 @@
             <div class="logo">GiftShare</div>
             <nav>
                 <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Donate Item</a></li>
+                    <li><a href="donor dashboard.html">Dashboard</a></li>
+                    <li><a href="donor donate.html">Donate Item</a></li>
                     <li><a href="#" class="active">Donation History</a></li>
-                    <li><a href="#">Notifications</a></li>
-                    <li><a href="#">Account Settings</a></li>
-                    <li><a href="#">Log Out</a></li>
+                    <li><a href="donor account setting.html">Account Settings</a></li>
+                    <li><a href="#" id="logoutBtn">Log Out</a></li>
                 </ul>
             </nav>
         </aside>
@@ -68,13 +67,41 @@
         </main>
     </div>
 
-    <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const sidebar = document.querySelector('.sidebar');
+    <!-- Confirmation Box -->
+  <div id="logoutConfirmation" class="confirmation-box" style="display: none;">
+    <div class="confirmation-content">
+      <p>Are you sure you want to leave?</p>
+      <button id="confirmLogout" class="btn-confirm">Yes</button>
+      <button id="cancelLogout" class="btn-cancel">No</button>
+    </div>
+  </div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+      const logoutBtn = document.getElementById("logoutBtn");
+      const logoutConfirmation = document.getElementById("logoutConfirmation");
+      const confirmLogout = document.getElementById("confirmLogout");
+      const cancelLogout = document.getElementById("cancelLogout");
 
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-    </script>
+      // Show confirmation box and blur the screen
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent default link action
+        document.body.classList.add("blur"); // Add blur effect
+        logoutConfirmation.style.display = "flex"; // Show the confirmation box
+      });
+
+      // Handle "Yes" button click
+      confirmLogout.addEventListener("click", () => {
+        document.body.classList.remove("blur"); // Remove blur (optional before navigation)
+        window.location.href = "index.html"; // Redirect to index.html
+      });
+
+      // Handle "No" button click
+      cancelLogout.addEventListener("click", () => {
+        document.body.classList.remove("blur"); // Remove blur effect
+        logoutConfirmation.style.display = "none"; // Hide the confirmation box
+      });
+    });
+</script>
+
 </body>
 </html>
