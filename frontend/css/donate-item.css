@@ -61,7 +61,7 @@
   
   .page-header h1 {
     font-size: 28px;
-    color: #28a745;
+    color: #038C29;
     margin-bottom: 10px;
   }
   
@@ -72,7 +72,7 @@
   
   .donation-form h2 {
     font-size: 22px;
-    color: #28a745;
+    color: #038C29;
     margin-top: 20px;
   }
   
@@ -110,19 +110,26 @@
   }
   
   .submit-button {
-    background-color: #ffc107;
+    background-color: #038C29;
     color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
+    width: 100%;
     transition: background-color 0.3s;
   }
   
   .submit-button:hover {
-    background-color: #e0a800;
+    background-color: white;
+    border: 2px solid #038C29;
+    color: #038C29;
+    font-weight: bold;
   }
+
+
+/* Confirmation Box Styling */
 
   .confirmation-box {
     position: fixed;
@@ -171,7 +178,7 @@
   } */
   
   .btn-confirm {
-    background-color: #28a745;
+    background-color: #038C29;
     color: white;
     margin-right: 10px;
   }

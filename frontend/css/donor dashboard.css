@@ -146,7 +146,6 @@ table tbody tr:hover {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   box-shadow: 0 10px 10px rgb(255, 255, 255, 1);
-  /* Semi-transparent black */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,14 +184,14 @@ table tbody tr:hover {
 } */
 
 .btn-confirm {
-  background-color: #dc3545;
+  background-color: #038C29;
   color: white;
   margin-right: 10px;
 }
 
 .btn-cancel {
-  background-color: #28a745;
   color: white;
+  background-color: #dc3545;
 }
 
 
