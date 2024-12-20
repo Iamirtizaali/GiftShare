@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Requests</title>
+  <link rel="stylesheet" href="../css/Admin_Manage_Request.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">GiftShare</div>
+      <nav>
+        <ul>
+            <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="Admin_manage_users.html">Manage Users</a></li>
+            <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
+            <li><a href="#">Manage Requests</a></li>
+            <li><a href="Admin_Report.html">Reports</a></li>
+            <li><a href="Admin_Setting.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <header class="navbar">
+        <h1>Manage Requests</h1>
+      </header>
+      <section class="request-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>User</th>
+              <th>Item</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>001</td>
+              <td>John Doe</td>
+              <td>Clothing</td>
+              <td><button class="btn-approve">Approve</button></td>
+            </tr>
+            <tr>
+              <td>002</td>
+              <td>Jane Smith</td>
+              <td>Books</td>
+              <td><button class="btn-approve">Approve</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

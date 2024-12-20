@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/Admin_Dashboard.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <img src="../Images/Gift Share Logo (2).png" alt="GiftShare Logo">
+      <span>GiftShare Admin Panel</span>
+    </div>
+    <div class="navbar-links">
+      <a href="#">Home</a>
+      <a href="#">Profile</a>
+      <a href="#">Help</a>
+      <a href="#">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="#" class="active">Dashboard</a></li>
+          <li><a href="Admin_manage_users.html">Manage Users</a></li>
+          <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
+          <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
+          <li><a href="Admin_Report.html">Reports</a></li>
+          <li><a href="Admin_Setting.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <section class="dashboard">
+        <h1>Welcome, Admin!</h1>
+        <p>Here’s an overview of the current activity on GiftShare.</p>
+        <div class="stats">
+          <div class="stat-box">
+            <h2>120</h2>
+            <p>Registered Users</p>
+          </div>
+          <div class="stat-box">
+            <h2>50</h2>
+            <p>Pending Requests</p>
+          </div>
+          <div class="stat-box">
+            <h2>300</h2>
+            <p>Items Donated</p>
+          </div>
+          <div class="stat-box">
+            <h2>15</h2>
+            <p>Reports Generated</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <div class="action-box">
+            <h3>Manage Users</h3>
+            <p>View and update user details.</p>
+          </div>
+          <div class="action-box">
+            <h3>Approve Requests</h3>
+            <p>Check and approve pending requests.</p>
+          </div>
+          <div class="action-box">
+            <h3>View Inventory</h3>
+            <p>Monitor available donations.</p>
+          </div>
+          <div class="action-box">
+            <h3>Generate Reports</h3>
+            <p>Create detailed reports.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
