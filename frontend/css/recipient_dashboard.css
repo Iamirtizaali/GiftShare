@@ -88,4 +88,198 @@
     padding: 10px;
     border-bottom: 1px solid #ddd;
   }
-  
+
+
+
+
+  /* Recipient account setting page */
+
+  /* General form styling */
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h2 {
+  color: #028702;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-section input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.form-section button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #028702;
+  color: #fff;
+}
+
+.save-btn:hover {
+  background: #026902;
+}
+
+.update-btn {
+  background: #028702;
+  color: #fff;
+}
+
+.update-btn:hover {
+  background: #026902;
+}
+
+.delete-account {
+  margin-top: 20px;
+}
+
+.delete-account p {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #f00;
+}
+
+.delete-btn {
+  background: #f00;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.delete-btn:hover {
+  background: #d00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    text-align: center;
+  }
+
+  main {
+    padding: 15px;
+  }
+
+  .form-section form {
+    width: 100%;
+  }
+
+  .form-section input {
+    font-size: 14px;
+  }
+
+  .form-section button {
+    width: 100%;
+  }
+}
+
+
+  /* Main heading and description styling */
+main h1 {
+  color: #028702;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+main p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Search filter styling */
+.search-filter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-filter input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.search-filter button {
+  background: #f3b619;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.search-filter button:hover {
+  background: #d69f14;
+}
+
+/* Table styling */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.history-table th {
+  background: #333;
+  color: #fff;
+  text-align: left;
+  padding: 10px;
+}
+
+.history-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.history-table .status-received {
+  color: #028702;
+  font-weight: bold;
+}
+
+.history-table .status-pending {
+  color: #f3b619;
+  font-weight: bold;
+}
+
+.history-table .view-details {
+  background: #f3b619;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.history-table .view-details:hover {
+  background: #d69f14;
+}

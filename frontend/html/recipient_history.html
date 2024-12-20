@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History</title>
+  <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
+  <link rel="stylesheet" href="../css/recipient_dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">GiftShare</div>
+      <nav>
+        <ul>
+          <li><a href="recipient_dashboard.html">Dashboard</a></li>
+          <li><a href="recipient_browsing.html">Request Item</a></li>
+          <li><a href="#" class="active">History</a></li>
+          <li><a href="recipient_account_setting.html">Account Settings</a></li>
+          <li><a href="#">Log Out</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main>
+      <h1>Your Requests History</h1>
+      <p>Track your past contributions and see the impact you’ve made.</p>
+      <div class="search-filter">
+        <input type="text" placeholder="Search by item name or date">
+        <button>Filter</button>
+      </div>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2024/10/2</td>
+            <td>Blanket</td>
+            <td class="status-received">Received</td>
+            <td><button class="view-details">View Details</button></td>
+          </tr>
+          <tr>
+            <td>2024/11/5</td>
+            <td>Books</td>
+            <td class="status-pending">Pending</td>
+            <td><button class="view-details">View Details</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</body>
+</html>
