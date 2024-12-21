@@ -12,16 +12,20 @@ const JWT_SECRET = process.env.SECRET_KEY;
 exports.userSignup = async (req, res) => {
   try {
     const { name, email, password, phone, role, address } = req.body;
-
+    // res.status(200).json({ message: 'User registered successfully.', status: 'success' });
+    // return;
     // Validate input
     if (!name || !email || !password || !phone || !role || !address) {
-      return res.status(400).json({ message: 'All fields are required.' });
+      return res.status(400).json({ 
+        status: 'error',	// success
+        message: 'All fields are required.' 
+      });
     }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email.' });
+      return res.status(400).json({ status: 'error', message: 'User already exists with this email.' });
     }
 
     // Create new user
