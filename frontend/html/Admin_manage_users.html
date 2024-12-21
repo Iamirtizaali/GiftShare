@@ -1,60 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Users</title>
-  <link rel="stylesheet" href="../css/Admin_manage_users.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">GiftShare</div>
-      <nav>
-        <ul>
-            <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
-            <li><a href="#">Manage Users</a></li>
-            <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
-            <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
-            <li><a href="Admin_Report.html">Reports</a></li>
-            <li><a href="Admin_Setting.html">Settings</a></li>
-        </ul>
-      </nav>
-    </aside>
 
-    <!-- Main Content -->
-    <main>
-      <header class="navbar">
-        <h1>Manage Users</h1>
-      </header>
-      <section class="user-table">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>John Doe</td>
-              <td>john@example.com</td>
-              <td><button class="btn-action">Edit</button></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jane Smith</td>
-              <td>jane@example.com</td>
-              <td><button class="btn-action">Edit</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
-  </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="../css/Admin_manage_users.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="navbar-logo">
+            <img src="../Images/Gift Share Logo (2).png" alt="GiftShare Logo">
+            <span>GiftShare Admin Panel</span>
+        </div>
+        <div class="navbar-links">
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+            <a href="#">Help</a>
+            <a href="#">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">GiftShare</div>
+            <nav>
+                <ul>
+                    <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
+                    <li><a href="#">Manage Users</a></li>
+                    <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
+                    <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
+                    <li><a href="Admin_Report.html">Reports</a></li>
+                    <li><a href="Admin_Setting.html">Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <header class="navbar">
+                <h1>Manage Users</h1>
+            </header>
+            <section class="user-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>john@example.com</td>
+                            <td><button class="btn-action">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>jane@example.com</td>
+                            <td><button class="btn-action">Edit</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
 </body>
+
 </html>
