@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftShare Signup</title>
+    <link rel="stylesheet" href="../css/signup2nd.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="form-container">
+            <h1>Welcome <span id="user-name"></span></h1>
+            <p>Just a click away...</p>
+            <form id="additionalForm">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                <div class="radio-group">
+                    <input type="radio" id="receiver" name="role" value="Recipient" required>
+                    <label for="receiver">Receiver</label>
+                    <input type="radio" id="donor" name="role" value="Donor" required>
+                    <label for="donor">Donor</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">Agree to <a href="#">privacy and terms of use</a></label>
+                </div>
+                <button type="submit" class="signup-button" id="signup-btn">Sign Up</button>
+            </form>
+        </div>
+        <div class="image-container">
+            <img src="../../Images/signup 2nd.jpg" alt="Donate Box">
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedData = JSON.parse(localStorage.getItem('signupData'));
+            const userNameElement = document.getElementById('user-name');
+            if (storedData && storedData.name) {
+                userNameElement.textContent = storedData.name;
+            } else {
+                userNameElement.textContent = 'User';
+            }
+
+            const signupButton = document.getElementById('signup-btn');
+            signupButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                const {name, email, password} = JSON.parse(localStorage.getItem('formData'));;
+                if(!email || !password || !name) {
+                    alert("Please fill out the previous form.");
+                    return;
+                }
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+                const role = document.querySelector('input[name="role"]:checked')?.value;
+                console.log(phone, role, address);
+                if (!role) {
+                    alert("Please select your role (Receiver or Donor).");
+                    return;
+                }
+
+                const completeData = { name, email, password, phone, address, role };
+
+                fetch('http://localhost:4000/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(completeData),
+                })
+                    .then((res) => res.text())
+                    .then((message) => {
+                        console.log(message);
+                        alert("Signup successful!");
+                        window.location.href = 'success.html';
+                    })
+                    .catch((err) => console.error(err));
+            });
+        });
+    </script>
+</body>
+</html>
