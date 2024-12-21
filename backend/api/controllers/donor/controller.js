@@ -9,32 +9,38 @@ const jwt = require('jsonwebtoken');
 // Donor creates a donation order
 exports.createDonationOrder = async (req, res) => {
   try {
-    console.log(req.user);
-    const { cart,address,pickupDate } = req.body;
-    const userId=req.user.id;
-    const donor=await Donor.findOne({ userId: userId });
+    console.log(req.body);
+    console.log(req.files);
+    const { pickupDate, address } = req.body;
+
+    // Parse cart from JSON
+    const cart = JSON.parse(req.body.cart);
+
+    // Map files to cart items
+    const processedCart = cart.map((item, index) => ({
+      ...item,
+      images: req.files
+        .filter((file) => file.fieldname.startsWith(`cart[${index}]`))
+        .map((file) => `/uploads/${file.filename}`),
+    }));
+
+    const donor = await Donor.findOne({ userId: req.user.id });
     if (!donor) {
       return res.status(404).json({ message: 'Donor not found.' });
     }
+
     const donorId = donor._id;
-    if (!cart || cart.length === 0) {
-      return res.status(400).json({ message: 'Cart cannot be empty.' });
-    }
 
     const newOrder = new OrdersToDeliver({
       donorId,
-      cart,
+      cart: processedCart,
       address,
       pickupDate,
     });
 
     await newOrder.save();
-    donor.
 
-    res.status(201).json({
-      message: 'Donation order created successfully',
-      order: newOrder,
-    });
+    res.status(201).json({ message: 'Donation order created successfully', order: newOrder });
   } catch (error) {
     console.error('Error creating donation order:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -112,5 +118,79 @@ exports.updateDeliveryStatus = async (req, res) => {
   } catch (error) {
     console.error('Error updating delivery status:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+exports.getDonorDashboardData = async (req, res) => {
+  try {
+    console.log(req.user);
+    console.log("hello");
+      const donorId = req.user._id; // `req.user` is populated by the middleware
+      const donor = await Donor.findOne({ userId: donorId });
+
+      if (!donor) {
+          return res.status(404).json({ message: 'Donor not found.' });
+      }
+
+      const totalDonations = await OrdersToDeliver.find({ donorId }).countDocuments();
+      const pendingPickups = await OrdersToDeliver.find({ donorId, deliveryStatus: 'Pending' }).countDocuments();
+      const familiesHelped = await OrdersToDeliver.find({ donorId, deliveryStatus: 'Delivered' }).countDocuments();
+      const upcomingPickups = await OrdersToDeliver.find({ donorId }).select('cart pickupDate deliveryStatus');
+
+      res.status(200).json({
+          accountHolderName: donor.name,
+          totalDonations,
+          pendingPickups,
+          familiesHelped,
+          upcomingPickups: upcomingPickups.map(order => ({
+              item: order.cart.map(c => c.itemName).join(', '),
+              date: order.pickupDate,
+              status: order.deliveryStatus,
+          })),
+      });
+  } catch (error) {
+      console.error('Error fetching donor dashboard data:', error);
+      res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+
+
+
+exports.getDonorHistory = async (req, res) => {
+  try {
+    const donorId = req.user._id; // Retrieved from authenticated middleware
+    console.log("hello , " + donorId);
+      const donor = await Donor.findOne({ userId: donorId });
+
+      if (!donor) {
+          return res.status(404).json({ message: "Donor not found." });
+      }
+      const user=await  User.findOne({ _id: donorId });
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+    }
+
+      const totalDonations = await OrdersToDeliver.find({ donorId }).countDocuments();
+      const pendingPickups = await OrdersToDeliver.find({ donorId, deliveryStatus: "Pending" }).countDocuments();
+      const familiesHelped = await OrdersToDeliver.find({ donorId, deliveryStatus: "Delivered" }).countDocuments();
+      const upcomingPickups = await OrdersToDeliver.find({ donorId }).select("cart pickupDate deliveryStatus");
+
+      res.status(200).json({
+          accountHolderName: user.name,
+          totalDonations,
+          pendingPickups,
+          familiesHelped,
+          upcomingPickups: upcomingPickups.map((order) => ({
+              item: order.cart.map((c) => c.itemName).join(", "),
+              date: order.pickupDate,
+              status: order.deliveryStatus,
+          })),
+      });
+  } catch (error) {
+      console.error("Error fetching donor history:", error);
+      res.status(500).json({ message: "Internal server error." });
   }
 };
