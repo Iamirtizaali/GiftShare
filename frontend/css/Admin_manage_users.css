@@ -31,6 +31,7 @@
   }
   
   .navbar-logo img {
+    /* margin-left: 30%; */
     width: 40px;
     margin-right: 10px;
   }
@@ -85,7 +86,8 @@
   
   .sidebar nav ul li a.active,
   .sidebar nav ul li a:hover {
-    background: #f39c12;
+    background: #FFC107;
+    ;
     color: #fff;
   }
   
@@ -127,7 +129,7 @@
   
   .stat-box h2 {
     font-size: 36px;
-    color: #f39c12;
+    color: #FFC107;
   }
   
   .stat-box p {
@@ -188,7 +190,8 @@ table {
   }
   
   table th {
-    background-color: #f3b619;
+    background-color: #34495e;
+    color: #ecf0f1;
   }
   
   table tbody tr:nth-child(even) {
@@ -210,6 +213,6 @@ table {
   }
   
   .btn-action:hover {
-    background-color: #f3b619;
+    background-color: #FFC107;
   }
   

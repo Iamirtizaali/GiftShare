@@ -83,7 +83,12 @@
     transition: background 0.3s, color 0.3s;
   }
   
-  .sidebar nav ul li a.active,
+  .sidebar nav ul li a.active
+  {
+    background: #f39c12;
+    color: #fff;
+  }
+
   .sidebar nav ul li a:hover {
     background: #f39c12;
     color: #fff;

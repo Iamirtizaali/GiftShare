@@ -6,6 +6,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Requests</title>
     <link rel="stylesheet" href="../css/Admin_Manage_Request.css">
+    <style>
+        /* Add some inline styles for demonstration */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            background: #34495e;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .navbar-logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            margin: 10px 0;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li a.active,
+        .sidebar ul li a:hover {
+            background: #f39c12;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .search-bar button {
+            padding: 8px 10px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-approve {
+            background-color: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-approve:hover {
+            background-color: #219150;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,7 +141,6 @@
         <div class="navbar-links">
             <a href="#">Home</a>
             <a href="#">Profile</a>
-            <a href="#">Help</a>
             <a href="#">Logout</a>
         </div>
     </header>
@@ -26,13 +148,12 @@
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">GiftShare</div>
             <nav>
                 <ul>
-                    <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
+                    <li><a href="Admin_Dashboard.html">Dashboard</a></li>
                     <li><a href="Admin_manage_users.html">Manage Users</a></li>
                     <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
-                    <li><a href="#">Manage Requests</a></li>
+                    <li><a href="#" class="active">Manage Requests</a></li>
                     <li><a href="Admin_Report.html">Reports</a></li>
                     <li><a href="Admin_Setting.html">Settings</a></li>
                 </ul>
@@ -41,9 +162,10 @@
 
         <!-- Main Content -->
         <main>
-            <header class="navbar">
-                <h1>Manage Requests</h1>
-            </header>
+            <div class="search-bar">
+                <input id="search-input" type="text" placeholder="Search by Request ID or Request Type">
+                <button onclick="filterTable()">Search</button>
+            </div>
             <section class="request-table">
                 <table>
                     <thead>
@@ -51,6 +173,7 @@
                             <th>Request ID</th>
                             <th>User</th>
                             <th>Item</th>
+                            <th>Request Type</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -59,12 +182,21 @@
                             <td>001</td>
                             <td>John Doe</td>
                             <td>Clothing</td>
+                            <td>Donor</td>
                             <td><button class="btn-approve">Approve</button></td>
                         </tr>
                         <tr>
                             <td>002</td>
                             <td>Jane Smith</td>
                             <td>Books</td>
+                            <td>Recipient</td>
+                            <td><button class="btn-approve">Approve</button></td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Robert Brown</td>
+                            <td>Toys</td>
+                            <td>Donor</td>
                             <td><button class="btn-approve">Approve</button></td>
                         </tr>
                     </tbody>
@@ -72,6 +204,20 @@
             </section>
         </main>
     </div>
+
+    <script>
+        function filterTable() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const idMatch = cells[0].textContent.toLowerCase().includes(query);
+                const typeMatch = cells[3].textContent.toLowerCase().includes(query);
+                row.style.display = idMatch || typeMatch ? '' : 'none';
+            });
+        }
+    </script>
 </body>
 
 </html>

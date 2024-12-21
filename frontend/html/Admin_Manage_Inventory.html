@@ -5,20 +5,226 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Inventory</title>
-    <link rel="stylesheet" href="../css/Admin_Manage_Inventiry.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #34495e;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+        .navbar-logo span {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: #f39c12;
+        }
+
+        /* Container Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar nav ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar nav ul li a.active,
+        .sidebar nav ul li a:hover {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .btn-add {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .btn-add:hover {
+            background-color: #219150;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .search-bar button {
+            padding: 8px 10px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: #2196F3;
+        }
+
+        .btn-edit:hover {
+            background-color: #0b7dda;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+        }
+
+        .btn-delete:hover {
+            background-color: #da190b;
+        }
+    </style>
+    <script>
+        function searchTable() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const match = [...cells].some(cell => cell.textContent.toLowerCase().includes(query));
+                row.style.display = match ? '' : 'none';
+            });
+        }
+    </script>
 </head>
 
 <body>
     <!-- Navbar -->
     <header class="navbar">
         <div class="navbar-logo">
-            <img src="../Images/Gift Share Logo (2).png" alt="GiftShare Logo">
             <span>GiftShare Admin Panel</span>
+            <img src="../Images/Gift Share Logo (2).png" alt="GiftShare Logo">
         </div>
         <div class="navbar-links">
             <a href="#">Home</a>
             <a href="#">Profile</a>
-            <a href="#">Help</a>
             <a href="#">Logout</a>
         </div>
     </header>
@@ -26,12 +232,11 @@
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">GiftShare</div>
             <nav>
                 <ul>
-                    <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
+                    <li><a href="Admin_Dashboard.html">Dashboard</a></li>
                     <li><a href="Admin_manage_users.html">Manage Users</a></li>
-                    <li><a href="#">Manage Inventory</a></li>
+                    <li><a href="#" class="active">Manage Inventory</a></li>
                     <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
                     <li><a href="Admin_Report.html">Reports</a></li>
                     <li><a href="Admin_Setting.html">Settings</a></li>
@@ -41,18 +246,57 @@
 
         <!-- Main Content -->
         <main>
-            <header class="navbar">
-                <h1>Manage Inventory</h1>
-            </header>
+            <button class="btn-add">Add New Item</button>
+
+            <div class="search-bar">
+                <input id="search-input" type="text" placeholder="Search by any field">
+                <button onclick="searchTable()">Search</button>
+            </div>
+
             <section class="inventory-list">
-                <div class="inventory-item">
-                    <h3>Item 1</h3>
-                    <p>Details of the item...</p>
-                </div>
-                <div class="inventory-item">
-                    <h3>Item 2</h3>
-                    <p>Details of the item...</p>
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Item 1</td>
+                            <td>Category 1</td>
+                            <td>10</td>
+                            <td>
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Item 2</td>
+                            <td>Category 2</td>
+                            <td>20</td>
+                            <td>
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Item 3</td>
+                            <td>Category 3</td>
+                            <td>15</td>
+                            <td>
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
         </main>
     </div>

@@ -6,19 +6,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
     <link rel="stylesheet" href="../css/Admin_manage_users.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 400px;
+            border-radius: 8px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .modal.active,
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .actions {
+            display: block;
+            margin-top: 0px;
+            /* justify-content: space-between; */
+            /* margin-bottom: 20px; */
+        }
+
+        #addUserBtn {
+            background-color: #038C29;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        #addUserBtn:hover {
+            background-color: #038C29;
+        }
+
+        #searchInput {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #0b7dda;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #da190b;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form input[type="radio"] { 
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* from input[type="radio"] { */
+
+
+        form button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #038C29;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #038C29;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Navbar -->
     <header class="navbar">
         <div class="navbar-logo">
-            <img src="../Images/Gift Share Logo (2).png" alt="GiftShare Logo">
             <span>GiftShare Admin Panel</span>
+            <img src="../Images/Gift Share Logo (2).png" alt="GiftShare Logo">
         </div>
         <div class="navbar-links">
             <a href="#">Home</a>
             <a href="#">Profile</a>
-            <a href="#">Help</a>
             <a href="#">Logout</a>
         </div>
     </header>
@@ -26,11 +146,10 @@
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">GiftShare</div>
             <nav>
                 <ul>
-                    <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
-                    <li><a href="#">Manage Users</a></li>
+                    <li><a href="Admin_Dashboard.html">Dashboard</a></li>
+                    <li><a href="#" class="active">Manage Users</a></li>
                     <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
                     <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
                     <li><a href="Admin_Report.html">Reports</a></li>
@@ -41,9 +160,16 @@
 
         <!-- Main Content -->
         <main>
-            <header class="navbar">
+            <!-- <header class="navbar">
                 <h1>Manage Users</h1>
-            </header>
+            </header> -->
+
+            <section class="actions">
+                <button id="addUserBtn">Add New User</button>
+                
+                <input type="text" id="searchInput" placeholder="Search by email or ID">
+            </section>
+
             <section class="user-table">
                 <table>
                     <thead>
@@ -54,24 +180,130 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="userTableBody">
                         <tr>
                             <td>1</td>
                             <td>John Doe</td>
                             <td>john@example.com</td>
-                            <td><button class="btn-action">Edit</button></td>
+                            <td>
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Jane Smith</td>
                             <td>jane@example.com</td>
-                            <td><button class="btn-action">Edit</button></td>
+                            <td>
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </section>
         </main>
     </div>
+
+    <!-- Add User Modal -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal" id="addUserModal">
+        <h2>Add New User</h2>
+        <form id="addUserForm">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" required>
+
+            <!-- <label>Role</label> -->
+            <label for="donor">Donor</label>
+            <input type="radio" id="donor" name="role" value="Donor" required>
+            <label for="recipient">Recipient</label>
+            <input type="radio" id="recipient" name="role" value="Recipient" required>
+
+            <button type="submit">Add User</button>
+        </form>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal" id="editUserModal">
+        <h2>Edit User</h2>
+        <form id="editUserForm">
+            <label for="editFullName">Full Name</label>
+            <input type="text" id="editFullName" name="fullName" required>
+
+            <label for="editEmail">Email</label>
+            <input type="email" id="editEmail" name="email" required>
+
+            <label for="editPassword">Password</label>
+            <input type="password" id="editPassword" name="password" required>
+
+            <label for="editPhone">Phone Number</label>
+            <input type="text" id="editPhone" name="phone" required>
+
+            <label for="editAddress">Address</label>
+            <input type="text" id="editAddress" name="address" required>
+
+            <input type="radio" id="editDonor" name="role" value="Donor" required>
+            <label for="editDonor">Donor</label>
+            <input type="radio" id="editRecipient" name="role" value="Recipient" required>
+            <label for="editRecipient">Recipient</label>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addUserBtn').addEventListener('click', () => {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('addUserModal').classList.add('active');
+        });
+
+        document.getElementById('modalOverlay').addEventListener('click', () => {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('addUserModal').classList.remove('active');
+            document.getElementById('editUserModal').classList.remove('active');
+        });
+
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('modalOverlay').classList.add('active');
+                document.getElementById('editUserModal').classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', () => {
+                if (confirm('Are you sure you want to delete this user?')) {
+                    // Add delete logic here
+                }
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', (event) => {
+            const searchTerm = event.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#userTableBody tr');
+            rows.forEach(row => {
+                const email = row.cells[2].textContent.toLowerCase();
+                const id = row.cells[0].textContent.toLowerCase();
+                if (email.includes(searchTerm) || id.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
