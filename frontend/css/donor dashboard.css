@@ -55,6 +55,7 @@ body {
 .sidebar nav ul li a:hover,
 .sidebar nav ul li.active a {
   background-color: #FFC107;
+  color: #333333;
 }
 
 .main-content {

@@ -186,9 +186,7 @@ table {
     border: 1px solid #ddd;
   }
   
-  table th {
-    /* background-color: #f3b619; */
-  }
+  
   
   table tbody tr:nth-child(even) {
     background-color: #f7f7f7;

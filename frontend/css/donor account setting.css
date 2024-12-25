@@ -1,125 +1,143 @@
-/* Reset */
-body, h1, p, ul, li, a, input, button {
+/* donor-dashboard.css */
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  body {
     font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
-}
-
-.container {
+  }
+  
+  .dashboard-container {
     display: flex;
-    width: 100%;
-}
-
-.sidebar {
+    flex-direction: row;
+    height: 100%;
+  }
+  
+  .sidebar {
+    background-color: #333333;
+    color: #fff;
     width: 20%;
-    background-color: #333;
+    padding: 20px;
+    /* margin-top: 10px; */
+    min-height: 100vh;
+  }
+  
+  .sidebar .logo h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+  
+  .sidebar nav ul {
+    margin-top: 40px;
+    list-style: none;
+  }
+  
+  .sidebar nav ul li {
+    margin: 15px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar nav ul li a:hover,
+  .sidebar nav ul li.active a {
+    background-color: #FFC107;
+    color: #333333;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 30px;
+  }
+  
+  header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  header p {
+    color: #555;
+    font-size: 18px;
+  }
+  
+  .overview {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+  }
+  
+  .card {
+    background-color: #038C29;
     color: #fff;
     padding: 20px;
-}
-
-.sidebar .logo {
+    border-radius: 10px;
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h2 {
+    font-size: 20px;
+  }
+  
+  .card p {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+  
+  .pickup-delivery h2 {
     font-size: 24px;
     margin-bottom: 20px;
-}
-
-.sidebar ul {
-    list-style: none;
-}
-
-.sidebar ul li a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.sidebar ul li a.active,
-.sidebar ul li a:hover {
-    background-color: #ffc107;
-    color: #000;
-}
-
-main {
-    width: 80%;
-    background-color: #f8f9fa;
-    padding: 20px;
-}
-
-header nav {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-header nav a {
-    color: #000;
-    text-decoration: none;
-    margin-left: 20px;
-    font-weight: bold;
-}
-
-.settings h1 {
-    color: #28a745;
-    margin-bottom: 10px;
-}
-
-form {
-    margin-bottom: 20px;
-}
-
-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-form input {
+  }
+  
+  table {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.save-btn {
-    background-color: #28a745;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    padding: 10px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #038C29;
     color: #fff;
-}
-
-.update-btn {
-    background-color: #28a745;
-    color: #fff;
-}
-
-.delete-btn {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-/* Confirmation Box Styling */
-.confirmation-box {
+  }
+  
+  table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  table tbody tr:hover {
+    background-color: #ddd;
+  }
+  
+  .confirmation-box {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 10px 10px rgb(255, 255, 255, 1);
-    /* Semi-transparent black */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,12 +168,192 @@ button {
     cursor: pointer;
   }
   
-  /* .btn-cancel:hover,
-  .btn-confirm:hover {
-    opacity: 0.8;
-    b
-    transition: opacity 0.3s ease;
-  } */
+  .btn-confirm {
+    background-color: #038C29;
+    color: white;
+    margin-right: 10px;
+  }
+  
+  .btn-cancel {
+    color: white;
+    background-color: #dc3545;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-container {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .main-content {
+      padding: 15px;
+    }
+  
+    .overview {
+      flex-direction: column;
+    }
+  
+    .card {
+      margin: 10px 0;
+    }
+  }
+  
+  /* donor-account-settings.css */
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .sidebar {
+    width: 20%;
+    background-color: #333333;
+    color: #fff;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .sidebar .logo {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+  }
+  
+  .sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar ul li a.active,
+  .sidebar ul li a:hover {
+    background-color: #FFC107;
+    color: #333333;
+  }
+  
+  main {
+    width: 80%;
+    background-color: #f8f9fa;
+    padding: 20px;
+  }
+  
+  header nav {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  
+  header nav a {
+    color: #000;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+  }
+  
+  .settings h1 {
+    color: #28a745;
+    margin-bottom: 10px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .save-btn {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .update-btn {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .confirmation-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .confirmation-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+  }
+  
+  .confirmation-content p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .btn-confirm,
+  .btn-cancel {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
   
   .btn-confirm {
     background-color: #dc3545;
@@ -168,20 +366,18 @@ button {
     color: white;
   }
   
-  
-
-/* Responsive Design */
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .container {
-        flex-direction: column;
+      flex-direction: column;
     }
-
+  
     .sidebar {
-        width: 100%;
-        text-align: center;
+      width: 100%;
+      text-align: center;
     }
-
+  
     main {
-        width: 100%;
+      width: 100%;
     }
-}
+  }
+  

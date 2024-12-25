@@ -6,11 +6,66 @@
     <title>Donation History</title>
     <link rel="stylesheet" href="../css/donor hostory.css">
     <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 400px;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .modal-content {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .modal-content p {
+            margin: 10px 0;
+        }
+        .modal-content p span {
+            font-weight: bold;
+        }
+        .modal button {
+            padding: 8px 16px;
+            border: none;
+            background-color: #ff0000;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            align-self: center;
+        }
+        .modal button:hover {
+            background-color: #e03e3e;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
-            <div class="logo">GiftShare</div>
+            <div class="logo"><b>GiftShare</b></div>
             <nav>
                 <ul>
                     <li><a href="donor dashboard.html">Dashboard</a></li>
@@ -21,26 +76,15 @@
                 </ul>
             </nav>
         </aside>
-        <div class="mobile-header">
-            <div class="logo">GiftShare</div>
-            <button id="menu-toggle" class="menu-icon">&#9776;</button>
-        </div>
         <main>
-            <header>
-                <nav>
-                    <a href="#">Home</a>
-                    <a href="#">About Us</a>
-                    <a href="#">Contact Us</a>
-                </nav>
-            </header>
             <section class="history">
                 <h1>Your Donation History</h1>
                 <p>Track your past contributions and see the impact you’ve made.</p>
                 <form class="filter-form">
-                    <input type="text" placeholder="Search by item name or date">
-                    <button type="button" class="filter-btn">Filter</button>
+                    <input id="searchBar" type="text" placeholder="Search by item name or date">
+                    <!-- <button type="button" class="filter-btn">Filter</button> -->
                 </form>
-                <table>
+                <table id="historyTable">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -50,13 +94,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr data-item="Blanket" data-date="2024/10/2" data-status="Delivered">
                             <td>2024/10/2</td>
                             <td>Blanket</td>
                             <td class="status delivered">Delivered</td>
                             <td><button class="view-btn">View Details</button></td>
                         </tr>
-                        <tr>
+                        <tr data-item="Books" data-date="2024/11/5" data-status="Pending Pickup">
                             <td>2024/11/5</td>
                             <td>Books</td>
                             <td class="status pending">Pending Pickup</td>
@@ -68,41 +112,71 @@
         </main>
     </div>
 
-    <!-- Confirmation Box -->
-  <div id="logoutConfirmation" class="confirmation-box" style="display: none;">
-    <div class="confirmation-content">
-      <p>Are you sure you want to leave?</p>
-      <button id="confirmLogout" class="btn-confirm">Yes</button>
-      <button id="cancelLogout" class="btn-cancel">No</button>
+    <!-- Modal -->
+    <div class="modal-overlay"></div>
+    <div class="modal" id="detailsModal">
+        <div class="modal-header">Item Details</div>
+        <div class="modal-content">
+            <p><span>Item Name:</span> <span id="itemName"></span></p>
+            <p><span>Donation Date:</span> <span id="donationDate"></span></p>
+            <p><span>Status:</span> <span id="donationStatus"></span></p>
+        </div>
+        <button id="closeModal">Close</button>
     </div>
-  </div>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-      const logoutBtn = document.getElementById("logoutBtn");
-      const logoutConfirmation = document.getElementById("logoutConfirmation");
-      const confirmLogout = document.getElementById("confirmLogout");
-      const cancelLogout = document.getElementById("cancelLogout");
 
-      // Show confirmation box and blur the screen
-      logoutBtn.addEventListener("click", (e) => {
-        e.preventDefault(); // Prevent default link action
-        document.body.classList.add("blur"); // Add blur effect
-        logoutConfirmation.style.display = "flex"; // Show the confirmation box
-      });
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Search functionality
+            const searchBar = document.getElementById("searchBar");
+            const historyTable = document.getElementById("historyTable");
+            const rows = historyTable.querySelectorAll("tbody tr");
 
-      // Handle "Yes" button click
-      confirmLogout.addEventListener("click", () => {
-        document.body.classList.remove("blur"); // Remove blur (optional before navigation)
-        window.location.href = "index.html"; // Redirect to index.html
-      });
+            searchBar.addEventListener("input", () => {
+                const query = searchBar.value.toLowerCase();
+                rows.forEach(row => {
+                    const date = row.cells[0].textContent.toLowerCase();
+                    const item = row.cells[1].textContent.toLowerCase();
 
-      // Handle "No" button click
-      cancelLogout.addEventListener("click", () => {
-        document.body.classList.remove("blur"); // Remove blur effect
-        logoutConfirmation.style.display = "none"; // Hide the confirmation box
-      });
-    });
-</script>
+                    if (date.includes(query) || item.includes(query)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
 
+            // Modal functionality
+            const viewButtons = document.querySelectorAll(".view-btn");
+            const modal = document.getElementById("detailsModal");
+            const modalOverlay = document.querySelector(".modal-overlay");
+            const closeModal = document.getElementById("closeModal");
+
+            viewButtons.forEach(button => {
+                button.addEventListener("click", (e) => {
+                    const row = e.target.closest("tr");
+                    const itemName = row.getAttribute("data-item");
+                    const donationDate = row.getAttribute("data-date");
+                    const donationStatus = row.getAttribute("data-status");
+
+                    document.getElementById("itemName").textContent = itemName;
+                    document.getElementById("donationDate").textContent = donationDate;
+                    document.getElementById("donationStatus").textContent = donationStatus;
+
+                    modal.style.display = "block";
+                    modalOverlay.style.display = "block";
+                });
+            });
+
+            closeModal.addEventListener("click", () => {
+                modal.style.display = "none";
+                modalOverlay.style.display = "none";
+            });
+
+            modalOverlay.addEventListener("click", () => {
+                modal.style.display = "none";
+                modalOverlay.style.display = "none";
+            });
+        });
+    </script>
 </body>
 </html>

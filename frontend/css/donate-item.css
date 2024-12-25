@@ -7,7 +7,7 @@
   }
   
   body {
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     background-color: #f9f9f9;
     display: flex;
     flex-direction: column;
@@ -52,6 +52,7 @@
   .sidebar nav ul li a:hover,
   .sidebar nav ul li.active a {
     background-color: #ffc107;
+    color: #333333;
   }
   
   .main-content {
@@ -59,16 +60,13 @@
     padding: 30px;
   }
   
-  .page-header h1 {
-    font-size: 28px;
+ header{
+    /* background-color: #038C29; */
     color: #038C29;
-    margin-bottom: 10px;
-  }
-  
-  .page-header p {
-    font-size: 18px;
-    color: #555;
-  }
+    /* padding: 10px; */
+    margin: 0%;
+    /* text-align: center; */
+ }
   
   .donation-form h2 {
     font-size: 22px;
