@@ -4,22 +4,25 @@ const { addToCart, placeOrder, confirmOrder, getCartItems, removeFromCart, updat
 const isAdmin = require('../../middlewares/isAdmin');
 const authorizUser = require('../../middlewares/middleware');
 
+const authenticateToken = require('../../middlewares/authToken');
+
+
 // Add item to cart
-router.post('/cart/add', authorizUser, addToCart);
+router.post('/cart/add', authenticateToken, addToCart);
 
 // Place an order
-router.post('/order/place', authorizUser, placeOrder);
+router.post('/order/place', authenticateToken, placeOrder);
 
 // Confirm an order (Admin role)
 router.put('/order/confirm', isAdmin, confirmOrder);
 
 // Get cart items for a recipient
-router.get('/cart', authorizUser, getCartItems);
+router.get('/cart', authenticateToken, getCartItems);
 
 // Remove an item from the cart
-router.delete('/cart/remove', authorizUser, removeFromCart);
+router.delete('/cart/remove', authenticateToken, removeFromCart);
 
-router.get('/recipient-dashboard', authorizUser, getRecipientDashboardData);
+router.get('/recipient-dashboard', authenticateToken, getRecipientDashboardData);
 
 
 

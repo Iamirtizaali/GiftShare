@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Recipient Dashboard</title>
   <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
   <link rel="stylesheet" href="../css/recipient_dashboard.css">
 </head>
+
 <body>
   <div class="container">
     <aside class="sidebar">
@@ -22,21 +24,54 @@
       </nav>
     </aside>
     <main>
-      <h1>Welcome Mr. Receiver</h1>
+      <h1>Welcome <span id="recipientName">Mr. Receiver</span></h1>
       <div class="stats">
-        <div class="stat-box">Active Requests<br><span>4</span></div>
-        <div class="stat-box">Completed Requests<br><span>10</span></div>
-        <div class="stat-box">Pending Approval<br><span>2</span></div>
+        <div class="stat-box">Active Requests<br><span id="activeRequests">Loading...</span></div>
+        <div class="stat-box">Completed Requests<br><span id="completedRequests">Loading...</span></div>
+        <div class="stat-box">Pending Approval<br><span id="pendingApproval">Loading...</span></div>
       </div>
       <div class="recent-activity">
         <h2>Recent Activity</h2>
-        <ul>
-          <li>Request for a winter coat approved</li>
-          <li>Delivery scheduled for Nov 29</li>
-          <li>Dining table donation is ready to dispatch</li>
+        <ul id="recentActivityList">
+          <!-- Dynamic list items will be added here -->
         </ul>
       </div>
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const apiEndpoint = "http://localhost:4000/api/recipient/recipient-dashboard";
+
+      // Fetch and populate recipient dashboard data
+      async function fetchRecipientDashboardData() {
+        try {
+          const response = await fetch(apiEndpoint);
+          const data = await response.json();
+
+          // Populate recipient's name
+          document.getElementById("recipientName").innerText = data.accountHolderName || "Recipient";
+
+          // Populate stats section
+          document.getElementById("activeRequests").innerText = `${data.activeRequests} Requests`;
+          document.getElementById("completedRequests").innerText = `${data.completedRequests} Requests`;
+          document.getElementById("pendingApproval").innerText = `${data.pendingApproval} Requests`;
+
+          // Populate recent activity list
+          const recentActivityList = document.getElementById("recentActivityList");
+          data.recentActivity.forEach(activity => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `Request for <strong>${activity.item}</strong> status: <span>${activity.status}</span> on ${new Date(activity.date).toLocaleDateString()}`;
+            recentActivityList.appendChild(listItem);
+          });
+        } catch (error) {
+          console.error("Error fetching recipient dashboard data:", error);
+        }
+      }
+
+      fetchRecipientDashboardData();
+    });
+  </script>
 </body>
+
 </html>

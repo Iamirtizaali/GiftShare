@@ -7,15 +7,21 @@ const {
     getAllPendingDonationRequests,
     getAllPendingRecipientRequests,
     getAllInventoryItems,
+    signup,
+    getAdminDashboardData,
+    updateUser
 } = require('./controller');
 const isAdmin = require('../../middlewares/isAdmin');
-
+const authenticateToken = require('../../middlewares/authToken');
 // Admin routes
-router.get('/donors', isAdmin, getAllDonors);
-router.get('/recipients', isAdmin, getAllRecipients);
-router.get('/users', isAdmin, getAllUsers);
-router.get('/pending-donations', isAdmin, getAllPendingDonationRequests);
-router.get('/pending-recipients', isAdmin, getAllPendingRecipientRequests);
-router.get('/inventory', isAdmin, getAllInventoryItems);
+router.get('/donors', authenticateToken, getAllDonors);
+router.get('/recipients', authenticateToken,getAllRecipients);
+router.get('/users', authenticateToken, getAllUsers);
+router.get('/pending-donations', authenticateToken, getAllPendingDonationRequests);
+router.get('/pending-recipients', authenticateToken, getAllPendingRecipientRequests);
+router.get('/inventory', authenticateToken, getAllInventoryItems);
+router.post('/signup', signup);
+router.get('/admin-dashboard',authenticateToken, getAdminDashboardData);
 
+router.put('/update-user/:userId',authenticateToken, updateUser);
 module.exports = router;

@@ -13,12 +13,12 @@
       <div class="logo">GiftShare</div>
       <nav>
         <ul>
-            <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
-            <li><a href="#">Manage Users</a></li>
-            <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
-            <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
-            <li><a href="Admin_Report.html">Reports</a></li>
-            <li><a href="Admin_Setting.html">Settings</a></li>
+          <li><a href="Admin_Dashboard.html">Dashboard</a></li>
+          <li><a href="#" class="active">Manage Users</a></li>
+          <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
+          <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
+          <li><a href="Admin_Report.html">Reports</a></li>
+          <li><a href="Admin_Setting.html">Settings</a></li>
         </ul>
       </nav>
     </aside>
@@ -38,23 +38,47 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>John Doe</td>
-              <td>john@example.com</td>
-              <td><button class="btn-action">Edit</button></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jane Smith</td>
-              <td>jane@example.com</td>
-              <td><button class="btn-action">Edit</button></td>
-            </tr>
+          <tbody id="usersTableBody">
+            <!-- Dynamic rows will be added here -->
           </tbody>
         </table>
       </section>
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const apiEndpoint = "http://localhost:4000/api/admin/users"; // API endpoint to get users data
+
+      // Fetch and populate users table
+      async function fetchUsers() {
+        try {
+          const response = await fetch(apiEndpoint, {
+            method: 'GET',
+            credentials: 'include', // Send cookies with request
+          });
+          const users = await response.json();
+
+          const usersTableBody = document.getElementById("usersTableBody");
+          usersTableBody.innerHTML = ""; // Clear any existing rows
+
+          users.forEach(user => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${user._id}</td>
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td><a href="Admin_Edit_User.html?id=${user._id}" class="btn-action">Edit</a></td>
+            `;
+            usersTableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
+      }
+
+      fetchUsers();
+    });
+  </script>
 </body>
 </html>

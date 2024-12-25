@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="../css/Admin_Dashboard.css">
 </head>
+
 <body>
   <!-- Navbar -->
   <header class="navbar">
@@ -43,19 +45,23 @@
         <p>Here’s an overview of the current activity on GiftShare.</p>
         <div class="stats">
           <div class="stat-box">
-            <h2>120</h2>
+            <h2 id="registeredUsers">Loading...</h2>
             <p>Registered Users</p>
           </div>
           <div class="stat-box">
-            <h2>50</h2>
+            <h2 id="pendingRequests">Loading...</h2>
             <p>Pending Requests</p>
           </div>
           <div class="stat-box">
-            <h2>300</h2>
+            <h2 id="pendingDonations">Loading...</h2>
+            <p>pending Donations</p>
+          </div>
+          <div class="stat-box">
+            <h2 id="itemsDonated">Loading...</h2>
             <p>Items Donated</p>
           </div>
           <div class="stat-box">
-            <h2>15</h2>
+            <h2 id="reportsGenerated">Loading...</h2>
             <p>Reports Generated</p>
           </div>
         </div>
@@ -81,5 +87,31 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const apiEndpoint = "http://localhost:4000/api/admin/admin-dashboard";
+
+      // Fetch and populate the dashboard stats
+      async function fetchAdminDashboardData() {
+        try {
+          const response = await fetch(apiEndpoint);
+          const data = await response.json();
+
+          // Populate stats section
+          document.getElementById("registeredUsers").innerText = data.registeredUsers;
+          document.getElementById("pendingRequests").innerText = data.pendingRequests;
+          document.getElementById("pendingDonations").innerText = data.pendingDonations;
+          document.getElementById("itemsDonated").innerText = data.itemsDonated;
+          document.getElementById("reportsGenerated").innerText = data.reportsGenerated;
+        } catch (error) {
+          console.error("Error fetching admin dashboard data:", error);
+        }
+      }
+
+      fetchAdminDashboardData();
+    });
+  </script>
 </body>
+
 </html>

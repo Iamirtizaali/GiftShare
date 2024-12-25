@@ -161,6 +161,7 @@ const removeFromCart = async (req, res) => {
 
 const getRecipientDashboardData = async (req, res) => {
     try {
+        console.log(('recipeint dashboard page'));
       const recipientId = req.user._id; // `req.user` is populated by the middleware
   
       // Fetch recipient data

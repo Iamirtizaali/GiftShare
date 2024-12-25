@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit User</title>
+  <link rel="stylesheet" href="../css/Admin_Edit_User.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        min-height: 100vh;
+      }
+      
+      .container {
+        display: flex;
+        width: 100%;
+      }
+      
+      .sidebar {
+        width: 240px;
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+      }
+      
+      .sidebar .logo {
+        font-size: 24px;
+        margin-bottom: 30px;
+      }
+      
+      .sidebar nav ul {
+        list-style: none;
+      }
+      
+      .sidebar nav ul li {
+        margin: 15px 0;
+      }
+      
+      .sidebar nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+      }
+      
+      .sidebar nav ul li a:hover,
+      .sidebar nav ul li a.active {
+        color: #16a085;
+      }
+      
+      main {
+        flex: 1;
+        background-color: #ecf0f1;
+        padding: 20px;
+      }
+      
+      .navbar {
+        background-color: #34495e;
+        color: white;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+      }
+      
+      .navbar h1 {
+        font-size: 24px;
+      }
+      
+      .edit-user-form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      .edit-user-form form {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .edit-user-form div {
+        margin-bottom: 15px;
+      }
+      
+      .edit-user-form label {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      
+      .edit-user-form input {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .edit-user-form input:focus {
+        border-color: #16a085;
+        outline: none;
+      }
+      
+      .edit-user-form button {
+        padding: 10px 20px;
+        background-color: #16a085;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      .edit-user-form button:hover {
+        background-color: #1abc9c;
+      }
+      
+      .edit-user-form button:focus {
+        outline: none;
+      }
+      
+</style>
+
+
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">GiftShare</div>
+      <nav>
+        <ul>
+          <li><a href="Admin_Dashboard.html">Dashboard</a></li>
+          <li><a href="Admin_manage_users.html">Manage Users</a></li>
+          <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
+          <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
+          <li><a href="Admin_Report.html">Reports</a></li>
+          <li><a href="Admin_Setting.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <header class="navbar">
+        <h1>Edit User</h1>
+      </header>
+      <section class="edit-user-form">
+        <form id="editUserForm">
+          <div>
+            <label for="userName">Name</label>
+            <input type="text" id="userName" name="userName" required>
+          </div>
+          <div>
+            <label for="userEmail">Email</label>
+            <input type="email" id="userEmail" name="userEmail" required>
+          </div>
+          <div>
+            <label for="userPhone">Phone</label>
+            <input type="text" id="userPhone" name="userPhone">
+          </div>
+          <div>
+            <label for="userAddress">Address</label>
+            <input type="text" id="userAddress" name="userAddress">
+          </div>
+          <button type="submit">Save Changes</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const userId = new URLSearchParams(window.location.search).get('id');
+      const apiEndpoint = `http://localhost:4000/api/admin/update-user/${userId}`;
+
+      // Fetch user data and populate the form
+      async function fetchUserData() {
+        try {
+          const response = await fetch(apiEndpoint);
+          const user = await response.json();
+
+          if (user) {
+            document.getElementById("userName").value = user.name;
+            document.getElementById("userEmail").value = user.email;
+            document.getElementById("userPhone").value = user.phone || '';
+            document.getElementById("userAddress").value = user.address || '';
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+
+      // Update user data
+      document.getElementById("editUserForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const updatedData = {
+          name: document.getElementById("userName").value,
+          email: document.getElementById("userEmail").value,
+          phone: document.getElementById("userPhone").value,
+          address: document.getElementById("userAddress").value,
+        };
+
+        try {
+          const response = await fetch(apiEndpoint, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            alert("User updated successfully!");
+            window.location.href = "Admin_manage_users.html"; // Redirect back to Manage Users page
+          } else {
+            alert(data.message || "Failed to update user.");
+          }
+        } catch (error) {
+          console.error("Error updating user data:", error);
+        }
+      });
+
+      fetchUserData();
+    });
+  </script>
+</body>
+</html>
