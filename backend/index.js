@@ -15,14 +15,14 @@ const cookieParser = require('cookie-parser');
 const stripe = require('stripe')("sk_test_51PdoPmRsi25iz5JVRePIfmgFPa9Xg6zZka6DCLBQVKbc2HQI0Ni9EKuVJuZDsNU1wiB5Vjp5rhcKa8NXustJz6SC00G5ww7IUZ");
 // Add CORS middleware
 app.use(cors({ origin: "*" })); // Configure CORS with options dfsd
-app.use(fileUpload());
+//app.use(fileUpload());
 const ejs = require("ejs");
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); 
 app.set("views", path.join(__dirname,"..","frontend" ,"views"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(cookieParser());
+app.use(cookieParser()); 
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 app.use(express.static(path.join(__dirname, "..", "frontend", "views")));
 app.use(express.static(path.join(__dirname, "..", "frontend", "css")));
@@ -31,12 +31,12 @@ app.use(express.static(path.join(__dirname, "..", "frontend", "Images")));
 app.use(express.static(path.join(__dirname, "..", "frontend", "kachra")));
 //app.use( express.static("D:/SE study material 3rd semester/SE Semester Project/GiftShare/frontend/html"));
 //console.log(path.join(__dirname, "..", "frontend")); 
-const server = createServer(app); 
+const server = createServer(app);  
 //console.log(__dirname, "..\frontend"); 
 console.log(path.join(__dirname,"..","frontend" ,"views"));
 const io = new Server(server, {
   cors: { origin: "*" },
-  maxHttpBufferSize: 1e8, 
+  maxHttpBufferSize: 1e8,  
 }); 
  
 const authRouter=require('./api/controllers/auth/router');

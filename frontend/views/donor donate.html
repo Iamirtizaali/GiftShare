@@ -16,82 +16,109 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#">Dashboard</a></li>
+          <li><a href="donor dashboard.html">Dashboard</a></li>
           <li class="active"><a href="#">Donate Item</a></li>
-          <li><a href="#">Donation History</a></li>
-          <li><a href="#">Account Settings</a></li>
-          <li><a href="#">Log Out</a></li>
+          <li><a href="donor history.html">Donation History</a></li>
+          <li><a href="donor account setting.html">Account Settings</a></li>
+          <li><a href="#" id="logoutBtn">Log Out</a></li>
         </ul>
       </nav>
     </aside>
 
     <main class="main-content">
-      <header class="page-header">
-        <h1>Turn Your Excess into Someone’s Necessity</h1>
-        <p>Donate your items and bring relief to those who need them</p>
+      <header>
+        <h1>Donate Item</h1>
+        <p>Fill in the details below to donate an item</p>
       </header>
 
-      <section class="donation-form">
-        <h2>Items Details</h2>
-        <form>
+      <section>
+        <form id="donationForm" enctype="multipart/form-data">
           <div class="form-group">
-            <label for="item-name">Item Name</label>
-            <input type="text" id="item-name" placeholder="Enter Item Name" required>
+            <label for="itemName">Item Name</label>
+            <input type="text" id="itemName" name="itemName" required>
           </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="category">Category</label>
-              <select id="category" required>
-                <option value="Clothing">Clothing</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Electronics">Electronics</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="condition">Condition</label>
-              <select id="condition" required>
-                <option value="New">New</option>
-                <option value="Used">Used</option>
-              </select>
-            </div>
-          </div>
-
           <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" rows="3" placeholder="Describe the item"></textarea>
-          </div>
-
-          <h2>Photos</h2>
-          <div class="form-group">
-            <label for="images">Upload Images</label>
-            <input type="file" id="images" multiple>
-          </div>
-
-          <h2>Pickup/Drop Off Details</h2>
-          <div class="form-group">
-            <label for="pickup-option">Pickup/Drop-off Option</label>
-            <select id="pickup-option" required>
-              <option value="Drop-off">Drop-off at designated location</option>
-              <option value="Pickup">Pickup from my location</option>
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option value="Clothing">Clothing</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Electronics">Electronics</option>
             </select>
           </div>
-
           <div class="form-group">
-            <label for="address">Address (if pickup is chosen)</label>
-            <input type="text" id="address" placeholder="Enter your address">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
           </div>
-
           <div class="form-group">
-            <label for="pickup-date">Preferred Pickup Date</label>
-            <input type="date" id="pickup-date" required>
+            <label for="condition">Condition</label>
+            <select id="condition" name="condition" required>
+              <option value="New">New</option>
+              <option value="Used">Used</option>
+            </select>
           </div>
-
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="images">Upload Images</label>
+            <input type="file" id="images" name="images" multiple required>
+          </div>
+          <div class="form-group">
+            <label for="pickupDate">Preferred Pickup Date</label>
+            <input type="date" id="pickupDate" name="pickupDate" required>
+          </div>
+          <div class="form-group">
+            <label for="address">Pickup Address</label>
+            <input type="text" id="address" name="address" required>
+          </div>
           <button type="submit" class="submit-button">Submit Donation</button>
         </form>
       </section>
     </main>
   </div>
+
+  <script>
+    // Form submission
+    document.getElementById('donationForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData();
+      formData.append('itemName', document.getElementById('itemName').value);
+      formData.append('category', document.getElementById('category').value);
+      formData.append('quantity', document.getElementById('quantity').value);
+      formData.append('condition', document.getElementById('condition').value);
+      formData.append('description', document.getElementById('description').value);
+
+      const files = document.getElementById('images').files;
+      Array.from(files).forEach((file) => {
+        formData.append('images', file);
+      });
+
+      formData.append('pickupDate', document.getElementById('pickupDate').value);
+      formData.append('address', document.getElementById('address').value);
+
+      console.log('FormData submitted:', [...formData.entries()]); // Debugging: Log FormData
+
+      try {
+        const response = await fetch('/api/donor/create-order', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          alert('Donation submitted successfully!');
+          document.getElementById('donationForm').reset();
+        } else {
+          const errorData = await response.json();
+          alert(`Failed to submit donation: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error('Error submitting donation:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -1,26 +1,65 @@
-// middlewares/uploadImage.js
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
-// Configure storage options
+// Function to generate a random 6-digit code
+function generateRandomCode() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'D:/SE study material 3rd semester/SE Semester Project/GiftShare/backend/uploads'); // Specify directory for profile pictures
+  destination: function (req, file, cb) {
+    console.log("file is ", file);
+    console.log("path is ", path.join(__dirname, "../api/data"));
+    cb(null, "D:/SE study material 3rd semester/SE Semester Project/GiftShare/backend/api/data");
   },
-  filename: (req, file, cb) => {
-    cb(null, `${req.user.userId}-${Date.now()}${path.extname(file.originalname)}`); // Generate unique filename
+  filename: function (req, file, cb) {
+    cb(null, `${new Date().getTime()}_${file.originalname}`);
   },
+  limits: { fileSize: 100000000 }, // limit file size to 1MB
 });
 
-// Filter for image uploads
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed'), false);
+  if (!file.originalname.match(/\.(jpeg|JPEG|jpg|JPG|png|PNG)$/)) {
+    return cb(new Error('Unsupported file type'), false);
   }
+  cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter
+});  // Ensure the field name here matches the one in your form or frontend request
 
-module.exports = upload;
+const uploadDocuments = () => {
+  const createDestinationDirectory = () => {
+    const destinationPath = path.join(
+      __dirname,
+      "..",
+      "data",
+    );
+    if (!fs.existsSync(destinationPath)) {
+      fs.mkdirSync(destinationPath, { recursive: true });
+    }
+    return destinationPath;
+  };
+
+  return multer({
+    storage: multer.diskStorage({
+      destination(req, file, cb) {
+        cb(null, createDestinationDirectory());
+      },
+      filename(req, file, cb) {
+        const randomCode = generateRandomCode();
+        const fileName = `${randomCode}_${file.originalname}`;
+        cb(null, fileName);
+      },
+    }),
+    fileFilter: (req, file, cb) => {
+      // Accept all files
+      cb(null, true);
+    },
+  });  // Use 'array' for handling multiple files with the same field name
+};
+
+module.exports = { upload, uploadDocuments };

@@ -7,58 +7,25 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    folder: 'profiles', // The folder in Cloudinary where you want to store images
-
     params: {
-        resource_type: 'auto'
-
+        folder: 'donation_items', // Folder in Cloudinary
+        resource_type: 'auto', // Support multiple file types
     },
 });
 
 const parser = multer({ storage });
 
 const setupUploadImageMiddleware = (req, res, next) => {
-    parser.single('image')(req, res, (err) => {
+    parser.array('cart[0][images]', 20)(req, res, (err) => {
         if (err) {
-            console.error('Error uploading file:', err);
-            return res.status(500).json({ message: "File not uploaded", error: err });
+            console.error('Error uploading files:', err);
+            return res.status(500).json({ message: 'Files not uploaded', error: err });
         }
         next();
     });
 };
-//& DOCUMENT UPLOADING
-const docStorage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    folder: 'documents', // The folder in Cloudinary where you want to store images
-    params: {
-        resource_type: 'auto'
-    },
-});
 
-const docParser = multer({ storage: docStorage });
-
-const setupUploadDocMiddleware = (req, res, next) => {
-    docParser.array('documents')(req, res, async (err) => {
-        if (err) {
-            console.error('Error uploading files:', err);
-            return res.status(500).json({ message: "Files not uploaded", error: err.message });
-        }
-
-        try {
-            // Upload files to Cloudinary and attach URLs and IDs to the request object
-            const uploadPromises = req.files.map(file => cloudinary.uploader.upload(file.path));
-            const results = await Promise.all(uploadPromises);
-
-            req.fileUrls = results.map(result => result.secure_url);
-            req.cloudinaryIds = results.map(result => result.public_id);
-            next();
-        } catch (uploadErr) {
-            console.error('Error uploading to Cloudinary:', uploadErr);
-            return res.status(500).json({ message: "Files not uploaded to Cloudinary", error: uploadErr.message });
-        }
-    });
-};
-
-module.exports = {setupUploadImageMiddleware,setupUploadDocMiddleware,cloudinary};
+module.exports = { setupUploadImageMiddleware, cloudinary };

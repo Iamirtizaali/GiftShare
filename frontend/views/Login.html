@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Login Page</title>
     <link rel="stylesheet" href="../css/Login.css">
+    <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
 </head>
 
 <body>
@@ -13,20 +14,21 @@
         <!-- Left Login Section -->
         <div class="login-section">
             <div class="logo">
-                <img src="../../Images/Gift Share Logo (2).png" alt="">
+                <img src="../Images/Gift Share Logo (2).png" alt="Logo">
             </div>
             <h2>Login</h2>
-            <form>
+            <form id="login-form">
                 <div class="input-group">
-                    <input type="email" placeholder="E-mail"  required>
+                    <input type="email" id="email" name="email" placeholder="E-mail" required>
                     <span class="icon">👤</span>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
                     <span class="icon">🔒</span>
                 </div>
                 <div class="forgot-password">
-                    <a href="#">Forgot password</a>
+                    <!-- Updated link to redirect to the forgot password page -->
+                    <a href="forgot-password.html">Forgot password</a>
                 </div>
                 <button type="submit" class="login-button">Login</button>
             </form>
@@ -35,11 +37,51 @@
 
         <!-- Right Image Section -->
         <div class="image-section">
-            <img src="../../Images/Login Page Pic.jpg" alt="Gift Image">
+            <img src="../Images/Login Page Pic.jpg" alt="Gift Image">
         </div>
     </div>
 
-    
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Collect form data
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Send API request
+                const response = await fetch('http://localhost:4000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include', // Important: Include cookies in the request
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Handle role-based redirection
+                    const { role } = data.user;
+                    if (role === 'Donor') {
+                        window.location.href = 'donor dashboard.html';
+                    } else if (role === 'Recipient') {
+                        window.location.href = 'recipient_dashboard.html';
+                    } else if (role === 'Admin') {
+                        window.location.href = 'Admin_Dashboard.html';
+                    } else {
+                        alert('Unknown role. Please contact support.');
+                    }
+                } else {
+                    // Display error message from the server
+                    alert(data.message || 'Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                alert('An unexpected error occurred. Please try again later.');
+            }
+        });
+    </script>
 </body>
 
 </html>

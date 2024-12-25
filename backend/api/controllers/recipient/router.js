@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addToCart, placeOrder, confirmOrder, getCartItems, removeFromCart, updateCartItemQuantity } = require('./controller');
+const { addToCart, placeOrder, confirmOrder, getCartItems, removeFromCart, updateCartItemQuantity,getRecipientDashboardData } = require('./controller');
 const isAdmin = require('../../middlewares/isAdmin');
 const authorizUser = require('../../middlewares/middleware');
 
@@ -18,5 +18,9 @@ router.get('/cart', authorizUser, getCartItems);
 
 // Remove an item from the cart
 router.delete('/cart/remove', authorizUser, removeFromCart);
+
+router.get('/recipient-dashboard', authorizUser, getRecipientDashboardData);
+
+
 
 module.exports = router;

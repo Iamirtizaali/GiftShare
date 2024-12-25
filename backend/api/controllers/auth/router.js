@@ -10,4 +10,10 @@ router.post('/login', authController.userLogin);
 // User Logout
 router.post('/logout', authController.logoutUser);
 
+
+router.post('/forgot-password', authController.forgotPassword);
+
+// Reset password route
+router.post('/reset-password/:token', authController.resetPassword);
+router.get('/reset-password/:token', authController.resetPage);
 module.exports = router;

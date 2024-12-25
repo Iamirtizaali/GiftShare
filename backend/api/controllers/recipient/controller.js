@@ -159,10 +159,56 @@ const removeFromCart = async (req, res) => {
     }
 };
 
+const getRecipientDashboardData = async (req, res) => {
+    try {
+      const recipientId = req.user._id; // `req.user` is populated by the middleware
+  
+      // Fetch recipient data
+      const recipient = await Recipient.findOne({ userId: recipientId }).populate('userId', 'name');
+  
+      if (!recipient) {
+        return res.status(404).json({ message: 'Recipient not found.' });
+      }
+  
+      // Fetch total active requests
+      const activeRequests = await OrdersToReceive.find({ recipientId, deliveryStatus: 'Pending' }).countDocuments();
+  
+      // Fetch completed requests
+      const completedRequests = await OrdersToReceive.find({ recipientId, deliveryStatus: 'Received' }).countDocuments();
+  
+      // Fetch pending approval requests
+      const pendingApproval = await OrdersToReceive.find({ recipientId, deliveryStatus: 'Confirmed' }).countDocuments();
+  
+      // Fetch recent activities (for example: request status updates)
+      const recentActivity = await OrdersToReceive.find({ recipientId })
+        .sort({ deliveryDate: -1 })
+        .limit(5); // Fetch last 5 activities
+  
+      // Return the dashboard data
+      res.status(200).json({
+        accountHolderName: recipient.userId.name, // Name of the recipient
+        activeRequests,
+        completedRequests,
+        pendingApproval,
+        recentActivity: recentActivity.map(activity => ({
+          item: activity.items.map(i => i.itemId.itemName).join(', '), // Join all item names
+          status: activity.deliveryStatus,
+          date: activity.deliveryDate,
+        })),
+      });
+    } catch (error) {
+      console.error('Error fetching recipient dashboard data:', error);
+      res.status(500).json({ message: 'Internal server error.' });
+    }
+  };
+
+
+
 module.exports = {
     addToCart,
     placeOrder,
     confirmOrder,
     getCartItems,
     removeFromCart,
+    getRecipientDashboardData
 };
