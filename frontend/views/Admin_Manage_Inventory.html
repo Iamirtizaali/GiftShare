@@ -13,9 +13,9 @@
       <div class="logo">GiftShare</div>
       <nav>
         <ul>
-            <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="Admin_Dashboard.html">Dashboard</a></li>
             <li><a href="Admin_manage_users.html">Manage Users</a></li>
-            <li><a href="#">Manage Inventory</a></li>
+            <li><a href="#" class="active">Manage Inventory</a></li>
             <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
             <li><a href="Admin_Report.html">Reports</a></li>
             <li><a href="Admin_Setting.html">Settings</a></li>
@@ -29,16 +29,47 @@
         <h1>Manage Inventory</h1>
       </header>
       <section class="inventory-list">
-        <div class="inventory-item">
-          <h3>Item 1</h3>
-          <p>Details of the item...</p>
-        </div>
-        <div class="inventory-item">
-          <h3>Item 2</h3>
-          <p>Details of the item...</p>
+        <div id="inventoryItems">
+          <!-- Dynamic inventory items will be inserted here -->
         </div>
       </section>
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const apiEndpoint = "http://localhost:4000/api/admin/inventory"; // API endpoint to get inventory items
+
+      // Fetch and populate inventory items
+      async function fetchInventoryItems() {
+        try {
+          const response = await fetch(apiEndpoint, { method: 'GET', credentials: 'include' });
+          const items = await response.json();
+
+          const inventoryItemsContainer = document.getElementById("inventoryItems");
+          inventoryItemsContainer.innerHTML = ""; // Clear existing items
+
+          items.forEach(item => {
+            const itemElement = document.createElement("div");
+            itemElement.classList.add("inventory-item");
+            itemElement.innerHTML = `
+              <h3>${item.itemName}</h3>
+              <p><strong>Category:</strong> ${item.category ? item.category : 'Not Available'}</p>
+              <p><strong>Quantity:</strong> ${item.quantity}</p>
+              <p><strong>Condition:</strong> ${item.condition}</p>
+              <p><strong>Description:</strong> ${item.description}</p>
+              <p><strong>Availability:</strong> ${item.availability ? 'Available' : 'Not Available'}</p>
+              <a href="Admin_Edit_Inventory.html?id=${item._id}" class="btn-action">Edit</a>
+            `;
+            inventoryItemsContainer.appendChild(itemElement);
+          });
+        } catch (error) {
+          console.error("Error fetching inventory items:", error);
+        }
+      }
+
+      fetchInventoryItems();
+    });
+  </script>
 </body>
 </html>

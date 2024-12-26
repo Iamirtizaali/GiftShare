@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Item - Categories</title>
+  <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
+  <link rel="stylesheet" href="../css/recipient_request.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">GiftShare</div>
+      <nav>
+        <ul>
+          <li><a href="recipient_dashboard.html">Dashboard</a></li>
+          <li><a href="#" class="active">Request Item</a></li>
+          <li><a href="recipient_history.html">History</a></li>
+          <li><a href="recipient_account_setting.html">Account Settings</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main>
+      <h1 class="page-title">Request an Item</h1>
+      
+      <!-- Categories Section -->
+      <div class="item-grid" id="category-grid">
+        <div class="item" data-category="Clothing">
+          <span>Clothing</span>
+        </div>
+        <div class="item" data-category="Electronics">
+          <span>Electronics</span>
+        </div>
+        <div class="item" data-category="Books">
+          <span>Books</span>
+        </div>
+        <div class="item" data-category="Furniture">
+          <span>Furniture</span>
+        </div>
+        <div class="item" data-category="Kitchen">
+          <span>Kitchen</span>
+        </div>
+        <div class="item" data-category="Others">
+          <span>Others</span>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <h2>Items Available</h2>
+      <div id="items-list">
+        <!-- Items will be displayed here -->
+      </div>
+
+      <!-- Cart -->
+      <div id="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-items">
+          <!-- Cart items will be displayed here -->
+        </ul>
+        <button id="place-order">Place Order</button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const categoryGrid = document.getElementById("category-grid");
+      const itemsList = document.getElementById("items-list");
+      const cartItems = document.getElementById("cart-items");
+
+      let cart = [];
+
+      // Fetch categories and display
+      categoryGrid.addEventListener("click", (e) => {
+        if (e.target.closest(".item")) {
+          const category = e.target.closest(".item").getAttribute("data-category");
+          fetchItemsByCategory(category);
+        }
+      });
+
+      // Fetch items based on selected category
+      async function fetchItemsByCategory(category) {
+        try {
+          const response = await fetch(`http://localhost:4000/api/recipient/items/${category}`);
+          const items = await response.json();
+          console.log(items);
+          itemsList.innerHTML = "";
+          items.forEach(item => {
+            const itemDiv = document.createElement("div");
+            itemDiv.classList.add("item");
+            itemDiv.innerHTML = `
+              <img src="${item.images[0]}" alt="${item.itemName}">
+              <span>${item.itemName}</span>
+              <p>${item.description}</p>
+              <button class="add-to-cart" data-id="${item._id}" data-name="${item.itemName}" data-quantity="${item.quantity}">Add to Cart</button>
+            `;
+            itemsList.appendChild(itemDiv);
+          });
+
+          // Attach event listeners to the add to cart buttons
+          document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener("click", addToCart);
+          });
+        } catch (error) {
+          console.error("Error fetching items:", error);
+        }
+      }
+
+      // Add item to cart
+      function addToCart(e) {
+        const itemId = e.target.getAttribute("data-id");
+        const itemName = e.target.getAttribute("data-name");
+        const quantity = parseInt(e.target.getAttribute("data-quantity"));
+
+        // Check if the item is already in the cart
+        const existingItem = cart.find(item => item.id === itemId);
+        if (existingItem) {
+          if (existingItem.quantity < quantity) {
+            existingItem.quantity++;
+            updateCart();
+          } else {
+            alert("Not enough stock available!");
+          }
+        } else {
+          cart.push({ id: itemId, name: itemName, quantity: 1 });
+          updateCart();
+        }
+      }
+
+      // Update cart view
+      function updateCart() {
+        cartItems.innerHTML = "";
+        cart.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} - Quantity: ${item.quantity}`;
+          cartItems.appendChild(li);
+        });
+      }
+
+      // Place order
+      document.getElementById("place-order").addEventListener("click", async () => {
+        const cartData = cart.map(item => ({
+          itemId: item.id,
+          quantity: item.quantity,
+        }));
+
+        try {
+          const response = await fetch("http://localhost:4000/api/recipient/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ recipientId: "recipientId", cartId: cartData }),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            alert("Order placed successfully!");
+            cart = []; // Clear cart
+            updateCart();
+          } else {
+            alert(data.message || "Failed to place order");
+          }
+        } catch (error) {
+          console.error("Error placing order:", error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

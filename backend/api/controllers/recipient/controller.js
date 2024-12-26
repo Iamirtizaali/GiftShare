@@ -162,11 +162,13 @@ const removeFromCart = async (req, res) => {
 const getRecipientDashboardData = async (req, res) => {
     try {
         console.log(('recipeint dashboard page'));
-      const recipientId = req.user._id; // `req.user` is populated by the middleware
-  
-      // Fetch recipient data
-      const recipient = await Recipient.findOne({ userId: recipientId }).populate('userId', 'name');
-  
+      const userId = req.user._id; // `req.user` is populated by the middleware
+      const recipient = await Recipient.findOne({ userId: userId }).populate('userId', 'name');
+      if (!recipient) {
+        return res.status(404).json({ message: 'Recipient not found.' });
+      }
+
+      const recipientId = recipient._id;
       if (!recipient) {
         return res.status(404).json({ message: 'Recipient not found.' });
       }
@@ -181,7 +183,7 @@ const getRecipientDashboardData = async (req, res) => {
       const pendingApproval = await OrdersToReceive.find({ recipientId, deliveryStatus: 'Confirmed' }).countDocuments();
   
       // Fetch recent activities (for example: request status updates)
-      const recentActivity = await OrdersToReceive.find({ recipientId })
+      const recentActivity = await OrdersToReceive.find({ recipientId }).populate({ path: 'items.itemId', model: 'Inventory' })
         .sort({ deliveryDate: -1 })
         .limit(5); // Fetch last 5 activities
   
@@ -193,8 +195,7 @@ const getRecipientDashboardData = async (req, res) => {
         pendingApproval,
         recentActivity: recentActivity.map(activity => ({
           item: activity.items.map(i => i.itemId.itemName).join(', '), // Join all item names
-          status: activity.deliveryStatus,
-          date: activity.deliveryDate,
+          status: activity.deliveryStatus
         })),
       });
     } catch (error) {
@@ -205,11 +206,178 @@ const getRecipientDashboardData = async (req, res) => {
 
 
 
+
+const displayItems= async (req, res) => {
+    const { category } = req.params;
+  
+    try {
+      const items = await Inventory.find({ category, availability: true });
+      console.log('items are ',items);
+      res.status(200).json(items);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+  // Place order and update item quantity in inventory
+  const createOrder= async (req, res) => {
+    const {  cartItems } = req.body;
+    const userId=req.user._id;
+    const recipientId=await Recipient.findOne({userId:userId});
+    console.log('recipient id is ',recipientId);
+    console.log('cart items are ',cartItems);
+
+  
+    try {
+      const newOrder = new OrdersToReceive({
+        recipientId,
+        items: cartItems,
+      });
+      //check if item.quantity is greater than available quantity
+        for (let i = 0; i < cartItems.length; i++) {
+            const item = await Inventory.findById(cartItems[i].itemId);
+            console.log('item is ',item);
+            if (item.quantity < cartItems[i].quantity) {
+                return res.status(400).json({ message: 'Insufficient stock for ' + item.itemName });
+            }
+        }
+      // Loop through cart items and update inventory
+      cartItems.forEach(async (item) => {
+        const inventoryItem = await Inventory.findById(item.itemId);
+        inventoryItem.quantity -= item.quantity;
+        if (inventoryItem.quantity <= 0) {
+          inventoryItem.availability = false;
+        }
+        await inventoryItem.save();
+      });
+  
+      await newOrder.save();
+      res.status(200).json({ message: 'Order placed successfully' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+
+// Add items to the recipient's cart
+const cart= async (req, res) => {
+  const { recipientId, itemId, quantity } = req.body;
+
+  try {
+    let recipient = await Recipient.findOne({ userId: recipientId });
+
+    if (!recipient) {
+      recipient = new Recipient({ userId: recipientId, cart: [] });
+    }
+
+    const existingItem = recipient.cart.find(item => item.itemId.toString() === itemId);
+
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      recipient.cart.push({ itemId, quantity });
+    }
+
+    await recipient.save();
+    res.status(200).json({ message: 'Item added to cart' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// GET /api/recipient/account
+const getRecipientAccount = async (req, res) => {
+    try {
+      const recipient = await Recipient.findOne({ userId: req.user._id }).populate('userId');
+      if (!recipient) return res.status(404).json({ message: "Recipient not found" });
+  
+      res.status(200).json({ user: recipient.userId });
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching account details" });
+    }
+  };
+
+  
+  // PUT /api/recipient/update-account
+const updateRecipientAccount = async (req, res) => {
+    const { name, email, phone, address } = req.body;
+  
+    try {
+      const recipient = await Recipient.findOne({ userId: req.user._id }).populate('userId');
+      if (!recipient) return res.status(404).json({ message: "Recipient not found" });
+  
+      recipient.userId.name = name || recipient.userId.name;
+      recipient.userId.email = email || recipient.userId.email;
+      recipient.userId.phone = phone || recipient.userId.phone;
+      recipient.userId.address = address || recipient.userId.address;
+  
+      await recipient.userId.save();
+      await recipient.save();
+  
+      res.status(200).json({ message: "Account details updated successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error updating account details" });
+    }
+  };
+
+  
+
+  // PUT /api/recipient/update-password
+const updateRecipientPassword = async (req, res) => {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+  
+    try {
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match" });
+      }
+  
+      const recipient = await Recipient.findOne({ userId: req.user._id }).populate('userId');
+      if (!recipient) return res.status(404).json({ message: "Recipient not found" });
+  
+      const isMatch = await bcrypt.compare(currentPassword, recipient.userId.password);
+      if (!isMatch) return res.status(400).json({ message: "Incorrect current password" });
+  
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      recipient.userId.password = hashedPassword;
+      await recipient.userId.save();
+  
+      res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error updating password" });
+    }
+  };
+  
+// DELETE /api/recipient/delete-account
+const deleteRecipientAccount = async (req, res) => {
+    try {
+      const recipient = await Recipient.findOne({ userId: req.user._id }).populate('userId');
+      if (!recipient) return res.status(404).json({ message: "Recipient not found" });
+  
+      await recipient.userId.remove(); // Remove user record
+      await recipient.remove(); // Remove recipient record
+  
+      res.status(200).json({ message: "Account deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error deleting account" });
+    }
+  };
+  
+
+
 module.exports = {
     addToCart,
     placeOrder,
     confirmOrder,
     getCartItems,
     removeFromCart,
-    getRecipientDashboardData
+    getRecipientDashboardData,
+    displayItems,
+    createOrder,
+    cart,
+    getRecipientAccount,
+    updateRecipientAccount,
+    updateRecipientPassword,
+    deleteRecipientAccount,
+  
 };

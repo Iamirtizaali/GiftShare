@@ -13,10 +13,10 @@
       <div class="logo">GiftShare</div>
       <nav>
         <ul>
-            <li><a href="Admin_Dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="Admin_Dashboard.html">Dashboard</a></li>
             <li><a href="Admin_manage_users.html">Manage Users</a></li>
             <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
-            <li><a href="#">Manage Requests</a></li>
+            <li><a href="#" class="active">Manage Requests</a></li>
             <li><a href="Admin_Report.html">Reports</a></li>
             <li><a href="Admin_Setting.html">Settings</a></li>
         </ul>
@@ -28,33 +28,126 @@
       <header class="navbar">
         <h1>Manage Requests</h1>
       </header>
+
+      <!-- Orders to Receive Section -->
       <section class="request-table">
+        <h2>Orders to Receive</h2>
         <table>
           <thead>
             <tr>
               <th>Request ID</th>
               <th>User</th>
               <th>Item</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="receiveOrdersTableBody">
+            <!-- Dynamic rows for OrdersToReceive will be inserted here -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Orders to Deliver Section -->
+      <section class="request-table">
+        <h2>Orders to Deliver</h2>
+        <table>
+          <thead>
             <tr>
-              <td>001</td>
-              <td>John Doe</td>
-              <td>Clothing</td>
-              <td><button class="btn-approve">Approve</button></td>
+              <th>Request ID</th>
+              <th>Donor</th>
+              <th>Item</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
-            <tr>
-              <td>002</td>
-              <td>Jane Smith</td>
-              <td>Books</td>
-              <td><button class="btn-approve">Approve</button></td>
-            </tr>
+          </thead>
+          <tbody id="deliverOrdersTableBody">
+            <!-- Dynamic rows for OrdersToDeliver will be inserted here -->
           </tbody>
         </table>
       </section>
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const receiveOrdersApi = "http://localhost:4000/api/admin/orders/receive"; // API endpoint for Orders to Receive
+      const deliverOrdersApi = "http://localhost:4000/api/admin/orders/deliver"; // API endpoint for Orders to Deliver
+
+      // Fetch Orders and update table dynamically
+      async function fetchOrders(apiEndpoint, tableBodyId, isDeliver = false) {
+        try {
+          const response = await fetch(apiEndpoint, { method: 'GET', credentials: 'include' });
+          const orders = await response.json();
+
+          const tableBody = document.getElementById(tableBodyId);
+          tableBody.innerHTML = ""; // Clear existing rows
+          console.log(orders);
+
+          orders.forEach(order => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${order._id}</td>
+              <td>${isDeliver ? order.donorId.name : order.recipientId.name}</td>
+              <td>${isDeliver ? order.cart.map(item => item.itemName).join(', ') : order.items.map(item => item.itemId.itemName).join(', ')}</td>
+              <td>${order.deliveryStatus}</td>
+              <td>
+                <button class="btn-approve" data-order-id="${order._id}" data-status="Confirmed" data-api="${apiEndpoint}">Approve</button>
+                <button class="btn-reject" data-order-id="${order._id}" data-status="Rejected" data-api="${apiEndpoint}">Reject</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+
+          // Attach event listeners to buttons
+          document.querySelectorAll('.btn-approve').forEach(button => {
+            button.addEventListener('click', handleRequest);
+          });
+
+          document.querySelectorAll('.btn-reject').forEach(button => {
+            button.addEventListener('click', handleRequest);
+          });
+
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
+      }
+
+      // Handle Approve/Reject Actions
+      async function handleRequest(event) {
+        const orderId = event.target.getAttribute('data-order-id');
+        const status = event.target.getAttribute('data-status');
+        const apiEndpoint = event.target.getAttribute('data-api');
+
+        try {
+          console.log(`Order ${status} request for ID: ${orderId} and api: ${apiEndpoint}`);
+          const response = await fetch(`${apiEndpoint}/approve-reject`, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderId, status }),
+            credentials: 'include'
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message);
+          //  alert(`Order ${status}`);
+          }
+          alert(`Order ${status} successfully.`);
+
+          
+          // Refresh orders
+          fetchOrders(receiveOrdersApi, 'receiveOrdersTableBody');
+          fetchOrders(deliverOrdersApi, 'deliverOrdersTableBody', true);
+        } catch (error) {
+          console.error("Error handling request:", error);
+        }
+      }
+
+      // Initial fetch of both orders
+      fetchOrders(receiveOrdersApi, 'receiveOrdersTableBody');
+      fetchOrders(deliverOrdersApi, 'deliverOrdersTableBody', true);
+    });
+  </script>
 </body>
 </html>

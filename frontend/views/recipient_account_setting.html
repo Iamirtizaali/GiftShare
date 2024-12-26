@@ -25,46 +25,175 @@
       <h1>Account Settings</h1>
 
       <section class="form-section">
-        <!-- <h2>Account Settings</h2> -->
-        <form>
+        <h2>Account Details</h2>
+        <form id="account-settings-form">
           <label for="name">Name:</label>
-          <input type="text" id="name" value="Mr. User">
+          <input type="text" id="name" value="Mr. User" required>
 
           <label for="email">Email:</label>
-          <input type="email" id="email" value="johndoe@example.com">
+          <input type="email" id="email" value="johndoe@example.com" required>
 
           <label for="contact">Contact Number:</label>
-          <input type="text" id="contact" value="+1234567890">
+          <input type="text" id="contact" value="+1234567890" required>
 
           <label for="address">Address:</label>
-          <input type="text" id="address" value="UET KSK Lahore..">
+          <input type="text" id="address" value="UET KSK Lahore.." required>
 
-          <button type="submit" class="save-btn">Save Changes</button>
+          <button type="button" class="save-btn" id="save-details">Save Changes</button>
         </form>
       </section>
 
       <section class="form-section">
         <h2>Update Password</h2>
-        <form>
+        <form id="password-update-form">
           <label for="current-password">Current Password:</label>
-          <input type="password" id="current-password" placeholder="Enter current password">
+          <input type="password" id="current-password" placeholder="Enter current password" required>
 
           <label for="new-password">New Password:</label>
-          <input type="password" id="new-password" placeholder="Enter new password">
+          <input type="password" id="new-password" placeholder="Enter new password" required>
 
           <label for="confirm-password">Confirm Password:</label>
-          <input type="password" id="confirm-password" placeholder="Re-enter new password">
+          <input type="password" id="confirm-password" placeholder="Re-enter new password" required>
 
-          <button type="submit" class="update-btn">Update Password</button>
+          <button type="button" class="update-btn" id="update-password">Update Password</button>
         </form>
       </section>
 
       <section class="form-section delete-account">
         <h2>Delete Account</h2>
         <p>Warning: Deleting your account will remove all your data permanently.</p>
-        <button class="delete-btn">Delete Account</button>
+        <button class="delete-btn" id="delete-account">Delete Account</button>
       </section>
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Fetch recipient data on page load
+      fetchRecipientData();
+
+      // Save details functionality
+      document.getElementById("save-details").addEventListener("click", saveDetails);
+
+      // Update password functionality
+      document.getElementById("update-password").addEventListener("click", updatePassword);
+
+      // Delete account functionality
+      document.getElementById("delete-account").addEventListener("click", deleteAccount);
+    });
+
+    async function fetchRecipientData() {
+      try {
+        const response = await fetch('/api/recipient/account', {
+          method: 'GET',
+          credentials: 'same-origin' // Ensure cookies are sent with the request
+        });
+        
+        const data = await response.json();
+
+        if (response.ok) {
+          document.getElementById('name').value = data.user.name;
+          document.getElementById('email').value = data.user.email;
+          document.getElementById('contact').value = data.user.phone;
+          document.getElementById('address').value = data.user.address;
+        } else {
+          alert(data.message || "Failed to load account details");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+
+    async function saveDetails() {
+      const updatedDetails = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("contact").value,
+        address: document.getElementById("address").value
+      };
+
+      try {
+        const response = await fetch('/api/recipient/update-account', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedDetails),
+          credentials: 'same-origin' // Ensure cookies are sent with the request
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Account details updated successfully!");
+        } else {
+          alert(data.message || "Failed to update details");
+        }
+      } catch (error) {
+        console.error("Error saving account details:", error);
+      }
+    }
+
+    async function updatePassword() {
+      const passwordData = {
+        currentPassword: document.getElementById("current-password").value,
+        newPassword: document.getElementById("new-password").value,
+        confirmPassword: document.getElementById("confirm-password").value
+      };
+
+      if (passwordData.newPassword !== passwordData.confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/recipient/update-password', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(passwordData),
+          credentials: 'same-origin' // Ensure cookies are sent with the request
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Password updated successfully!");
+        } else {
+          alert(data.message || "Failed to update password");
+        }
+      } catch (error) {
+        console.error("Error updating password:", error);
+      }
+    }
+
+    async function deleteAccount() {
+      const confirmDeletion = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+
+      if (confirmDeletion) {
+        try {
+          const response = await fetch('/api/recipient/delete-account', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin' // Ensure cookies are sent with the request
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("Account deleted successfully!");
+            window.location.href = 'index.html'; // Redirect to home page after deletion
+          } else {
+            alert(data.message || "Failed to delete account");
+          }
+        } catch (error) {
+          console.error("Error deleting account:", error);
+        }
+      }
+    }
+  </script>
 </body>
 </html>

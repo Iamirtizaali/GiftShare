@@ -61,7 +61,7 @@
           const recentActivityList = document.getElementById("recentActivityList");
           data.recentActivity.forEach(activity => {
             const listItem = document.createElement("li");
-            listItem.innerHTML = `Request for <strong>${activity.item}</strong> status: <span>${activity.status}</span> on ${new Date(activity.date).toLocaleDateString()}`;
+            listItem.innerHTML = `Request for <strong>${activity.item}</strong> status: <span>${activity.status}</span>`;
             recentActivityList.appendChild(listItem);
           });
         } catch (error) {

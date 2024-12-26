@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { addToCart, placeOrder, confirmOrder, getCartItems, removeFromCart, updateCartItemQuantity,getRecipientDashboardData } = require('./controller');
+const { addToCart, placeOrder, confirmOrder, getCartItems, removeFromCart, updateCartItemQuantity,getRecipientDashboardData ,displayItems,
+    createOrder,
+    cart,
+    getRecipientAccount,
+    updateRecipientAccount,
+    updateRecipientPassword,
+    deleteRecipientAccount,
+} = require('./controller');
 const isAdmin = require('../../middlewares/isAdmin');
 const authorizUser = require('../../middlewares/middleware');
 
@@ -24,6 +31,16 @@ router.delete('/cart/remove', authenticateToken, removeFromCart);
 
 router.get('/recipient-dashboard', authenticateToken, getRecipientDashboardData);
 
+router.get('/items/:category', authenticateToken, displayItems);
 
+router.post('/order', authenticateToken, createOrder);
+
+router.put('/cart', authenticateToken, cart);
+
+
+router.get('/account', authenticateToken, getRecipientAccount);
+router.put('/account', authenticateToken, updateRecipientAccount);
+router.put('/account/password', authenticateToken, updateRecipientPassword);
+router.delete('/account', authenticateToken, deleteRecipientAccount);
 
 module.exports = router;

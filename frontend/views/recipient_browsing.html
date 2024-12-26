@@ -23,33 +23,102 @@
     </aside>
     <main>
       <h1 class="page-title">Request an Item</h1>
-      <div class="item-grid">
-        <div class="item">
+      
+      <!-- Categories section -->
+      <div class="item-grid" id="category-grid">
+        <div class="item" data-category="Clothing">
           <img src="../Images/Clothing.jpg" alt="Clothing">
           <span>Clothing</span>
         </div>
-        <div class="item">
+        <div class="item" data-category="Electronics">
           <img src="../Images/Electronics.jpg" alt="Electronics">
           <span>Electronics</span>
         </div>
-        <div class="item">
+        <div class="item" data-category="Books">
           <img src="../Images/Books.jpg" alt="Books">
           <span>Books</span>
         </div>
-        <div class="item">
+        <div class="item" data-category="Furniture">
           <img src="../Images/Furniture.jpg" alt="Furniture">
           <span>Furniture</span>
         </div>
-        <div class="item">
+        <div class="item" data-category="Kitchen">
           <img src="../Images/Kitchen.jpg" alt="Kitchen">
           <span>Kitchen</span>
         </div>
-        <div class="item">
+        <div class="item" data-category="Others">
           <img src="../Images/More Goods.jpg" alt="Others">
           <span>Others</span>
         </div>
       </div>
+
+      <!-- Items section will be populated dynamically -->
+      <div id="items-list">
+        <!-- Items will be displayed here after category selection -->
+      </div>
+
     </main>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const categoryGrid = document.getElementById("category-grid");
+      const itemsList = document.getElementById("items-list");
+
+      // Event listener for category clicks
+      categoryGrid.addEventListener("click", (e) => {
+       // Update the event listener for category clicks
+categoryGrid.addEventListener("click", (e) => {
+  if (e.target.closest(".item")) {
+    console.log('hello');
+    const category = e.target.closest(".item").getAttribute("data-category");
+    window.location.href = `category_items.html?category=${category}`;
+  }
+});
+      });
+
+      // Fetch items by category
+      async function fetchItemsByCategory(category) {
+        try {
+          const response = await fetch(`http://localhost:4000/api/recipient/items/${category}`);
+          const items = await response.json();
+
+          itemsList.innerHTML = ""; // Clear the previous items
+          items.forEach(item => {
+            const itemDiv = document.createElement("div");
+            itemDiv.classList.add("item");
+            itemDiv.innerHTML = `
+  <img src="/images/${item.images[0]}" alt="${item.itemName}">
+  <span>${item.itemName}</span>
+  <p>${item.description}</p>
+  <button class="add-to-cart" data-id="${item._id}" data-name="${item.itemName}" data-quantity="${item.quantity}">Add to Cart</button>
+`;
+
+            itemsList.appendChild(itemDiv);
+          });
+
+          // Attach event listeners to "Add to Cart" buttons
+          document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener("click", addToCart);
+          });
+        } catch (error) {
+          console.error("Error fetching items:", error);
+        }
+      }
+
+      // Add item to the cart
+      function addToCart(e) {
+        const itemId = e.target.getAttribute("data-id");
+        const itemName = e.target.getAttribute("data-name");
+        const quantity = parseInt(e.target.getAttribute("data-quantity"));
+
+        // For now, just log the item added to the cart
+        console.log(`Item added to cart: ${itemName} (ID: ${itemId}, Quantity: ${quantity})`);
+
+        // Here you would add the item to the cart array or UI
+        // Implement your cart logic here, like storing it in localStorage or making a POST request to your backend
+      }
+    });
+  </script>
 </body>
 </html>

@@ -9,7 +9,14 @@ const {
     getAllInventoryItems,
     signup,
     getAdminDashboardData,
-    updateUser
+    updateUser,
+    updateInventoryItem,
+    getAllOrdersToReceive,
+    getAllOrdersToDeliver,
+    approveRejectOrder,
+    approveRejectDeliveryOrder,
+    settings,
+    logout,
 } = require('./controller');
 const isAdmin = require('../../middlewares/isAdmin');
 const authenticateToken = require('../../middlewares/authToken');
@@ -24,4 +31,17 @@ router.post('/signup', signup);
 router.get('/admin-dashboard',authenticateToken, getAdminDashboardData);
 
 router.put('/update-user/:userId',authenticateToken, updateUser);
+router.put('/inventory/:itemId', authenticateToken, updateInventoryItem);
+
+// API routes
+router.get('/orders/receive', authenticateToken, getAllOrdersToReceive);
+router.get('/orders/deliver', authenticateToken, getAllOrdersToDeliver);
+  // API routes
+  router.put('/orders/receive/approve-reject', authenticateToken, approveRejectOrder);
+  router.put('/orders/deliver/approve-reject', authenticateToken, approveRejectDeliveryOrder);
+
+router.put('/settings', authenticateToken, settings);
+router.post('/logout', authenticateToken, logout);
+
+
 module.exports = router;

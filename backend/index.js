@@ -46,7 +46,7 @@ const categoryRouter=require('./api/controllers/category/router');
 const adminRouter=require('./api/controllers/admin/router');
 app.use('/api/auth', authRouter);
 app.use('/api/donor', donorRouter); 
-app.use('/api/recipient', recipientRouter);
+app.use('/api/recipient', recipientRouter); 
 app.use('/api/category', categoryRouter);
 app.use('/api/admin', adminRouter);
 
@@ -59,7 +59,8 @@ app.use('/api/admin', adminRouter);
 // });
 
 app.use('/', express.static(path.join(__dirname, "..", "frontend", "html")));
-  
+app.use('/images', express.static(path.join(__dirname,"api", "data")));
+console.log(path.join(__dirname,"api", "data"));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "html", "index.html"));
 }); 

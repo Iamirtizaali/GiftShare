@@ -161,6 +161,161 @@ const updateUser = async (req, res) => {
     }
   };
 
+// Update inventory item details
+const updateInventoryItem = async (req, res) => {
+    try {
+      const { itemId } = req.params;
+      const { itemName, categoryId, quantity, condition, description, availability } = req.body;
+  
+      // Update the inventory item
+      const updatedItem = await Inventory.findByIdAndUpdate(
+        itemId,
+        { itemName, categoryId, quantity, condition, description, availability },
+        { new: true } // Return the updated item
+      );
+  
+      if (!updatedItem) {
+        return res.status(404).json({ message: 'Item not found.' });
+      }
+  
+      res.status(200).json(updatedItem);
+    } catch (error) {
+      console.error('Error updating inventory item:', error);
+      res.status(500).json({ message: 'Internal server error.' });
+    }
+  };
+  
+  // Assuming we have models for OrdersToReceive, OrdersToDeliver, and Inventory
+
+// Get all Orders to Receive
+const getAllOrdersToReceive = async (req, res) => {
+  try {
+    const orders = await OrdersToReceive.find().populate('recipientId').populate('items.itemId');
+
+    console.log('orders to receive:',orders);
+    res.status(200).json(orders);
+    
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get all Orders to Deliver
+const getAllOrdersToDeliver = async (req, res) => {
+  try {
+    const orders = await ordersToDeliver.find()
+      .populate({
+        path: 'donorId',
+        model: 'User',
+      });
+    console.log('orders to deliver:',orders);
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Approve or Reject Orders
+const approveRejectOrder = async (req, res) => {
+    const { orderId, status } = req.body; // status can be 'Confirmed' or 'Rejected'
+    try {
+      const order = await OrdersToReceive.findById(orderId);
+      
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      order.deliveryStatus = status;
+      await order.save();
+  
+      if (status === 'Confirmed') {
+        // For OrdersToReceive, we just update the status
+        res.status(200).json({ message: 'Order confirmed' });
+      } else if (status === 'Rejected') {
+        // Handle rejection logic if needed
+        res.status(200).json({ message: 'Order rejected' });
+      }
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  
+  // Approve or Reject Orders to Deliver and Add Items to Inventory
+  const approveRejectDeliveryOrder = async (req, res) => {
+    console.log('entered in approveRejectDeliveryOrder');
+    const { orderId, status } = req.body; // status can be 'Delivered' or 'Rejected'
+    try {
+      const order = await ordersToDeliver.findById(orderId);
+  
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      order.deliveryStatus = status;
+      await order.save();
+  
+      if (status === 'Confirmed') {
+        // Add items to inventory
+        const inventoryItems = order.cart.map(item => ({
+          itemName: item.itemName,
+          category: item.category,
+          quantity: item.quantity,
+          condition: item.condition,
+          description: item.description,
+          addedBy: order.donorId,
+          availability: true, // Make it available for request
+            images: item.images,
+        }));
+  
+        await Inventory.insertMany(inventoryItems);
+        res.status(200).json({ message: 'Items added to inventory and order delivered' });
+      } else if (status === 'Rejected') {
+        res.status(200).json({ message: 'Order rejected' });
+      }
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  
+
+// Update admin user profile
+const settings= async (req, res) => {
+  const { username, email, password } = req.body;
+  const adminId = req.user._id; // Get admin's userId from the authentication token
+
+  try {
+    const user = await User.findById(adminId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update user information
+    user.name = username || user.name;
+    user.email = email || user.email;
+    if (password) {
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    await user.save();
+    res.status(200).json({ message: 'Profile updated successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Logout endpoint to clear the authentication token
+const logout=async (req, res) => {
+  // Clear the cookie or token
+  res.clearCookie('token'); // or use res.send() if you're using session-based login
+  res.status(200).json({ message: 'Logged out successfully' });
+};
+
+
+
+
+
 module.exports = {
     getAllDonors,
     getAllRecipients,
@@ -171,4 +326,12 @@ module.exports = {
     signup,
     getAdminDashboardData,
     updateUser,
+    updateInventoryItem,
+    getAllOrdersToReceive,
+    getAllOrdersToDeliver,
+    approveRejectOrder,
+    approveRejectDeliveryOrder,
+    settings,
+    logout,
+  
 };
