@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log("file is ", file);
     console.log("path is ", path.join(__dirname, "../api/data"));
-    cb(null, "D:/SE study material 3rd semester/SE Semester Project/GiftShare/backend/api/data");
+    cb(null, path.join(__dirname,"..","data"));
   },
   filename: function (req, file, cb) {
     cb(null, `${new Date().getTime()}_${file.originalname}`);

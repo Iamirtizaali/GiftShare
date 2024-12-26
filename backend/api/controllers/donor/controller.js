@@ -26,12 +26,14 @@ exports.createDonationOrder = async (req, res) => {
     if (!donor) {
       return res.status(404).json({ message: 'Donor not found.' });
     }
-
     const { address, pickupDate } = req.body;
     //make an array of all images path
     let images = [];
     if (req.files) {
-      images = req.files.map((file) => file.path);
+      //i just want to store name of the image
+      // i will store name of the image in the database and path of the image in the file system
+      images = req.files.map((file) => file.filename);
+      //images = req.files.map((file) => file.path);
     }
     let cart= {};
       //create cart
