@@ -112,12 +112,27 @@
       document.body.classList.add("blur");
       logoutConfirmation.style.display = "flex";
     });
-  
-    confirmLogout.addEventListener("click", () => {
-      // Clear the token cookie on logout
-      document.cookie = 'token=; Max-Age=0; path=/'; // This will clear the cookie
-      window.location.href = "index.html";
+    onfirmLogout.addEventListener("click", () => {
+      fetch('/api/donor/logout', {
+        method: 'GET',
+        credentials: 'same-origin' // Ensure cookies are sent with the request
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to log out');
+          return response.json();
+        })
+        .then(data => {
+          console.log('Logged out:', data);
+          alert('Logged out successfully');
+          window.location.href = 'index.html'; // Redirect after logout
+        })
+        .catch(error => {
+          console.error('Logout failed:', error);
+          alert('Failed to log out. Please try again.');
+        });
     });
+  
+    
   
     cancelLogout.addEventListener("click", () => {
       document.body.classList.remove("blur");

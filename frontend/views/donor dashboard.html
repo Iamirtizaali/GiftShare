@@ -140,6 +140,7 @@
       // Handle "Yes" button click
       confirmLogout.addEventListener("click",async () => {
         try {
+          console.log("Logging out...");
           // Call the backend logout API
           const response = await fetch("http://localhost:4000/api/donor/logout", {
               method: "GET",

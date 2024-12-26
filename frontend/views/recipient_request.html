@@ -93,6 +93,7 @@
               <img src="${item.images[0]}" alt="${item.itemName}">
               <span>${item.itemName}</span>
               <p>${item.description}</p>
+              <p>${item.quantity} available</p>
               <button class="add-to-cart" data-id="${item._id}" data-name="${item.itemName}" data-quantity="${item.quantity}">Add to Cart</button>
             `;
             itemsList.appendChild(itemDiv);
