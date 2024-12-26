@@ -7,6 +7,7 @@ const { addToCart, placeOrder, confirmOrder, getCartItems, removeFromCart, updat
     updateRecipientAccount,
     updateRecipientPassword,
     deleteRecipientAccount,
+    recipientHistory
 } = require('./controller');
 const isAdmin = require('../../middlewares/isAdmin');
 const authorizUser = require('../../middlewares/middleware');
@@ -43,4 +44,13 @@ router.put('/account', authenticateToken, updateRecipientAccount);
 router.put('/account/password', authenticateToken, updateRecipientPassword);
 router.delete('/account', authenticateToken, deleteRecipientAccount);
 
+router.get('/history', authenticateToken, recipientHistory);
+
+//logout the user
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.json({
+        message: 'Logged out successfully'
+    });
+});
 module.exports = router;

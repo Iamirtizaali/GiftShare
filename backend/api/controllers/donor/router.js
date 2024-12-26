@@ -82,5 +82,11 @@ router.delete('/delete-account', authenticateToken, donorController.deleteAccoun
 
 router.get('/get-user-data', authenticateToken, donorController.getUserData);
 
-
+//logout page
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.json({
+        message: 'Logged out successfully'
+    });
+});
 module.exports = router;

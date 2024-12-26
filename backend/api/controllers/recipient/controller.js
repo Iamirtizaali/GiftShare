@@ -364,6 +364,25 @@ const deleteRecipientAccount = async (req, res) => {
   };
   
 
+  const recipientHistory= async (req, res) => {
+    try {
+      const userId = req.user._id;
+      const recipient = await Recipient.findOne({ userId: userId });
+      if (!recipient) return res.status(404).json({ message: 'Recipient not found' });
+      const recipientId = recipient._id;
+  console.log("recipientId is ",recipientId);
+      // Fetch recipient's orders along with item details
+      const history = await OrdersToReceive.find({ recipientId })
+        .populate('items.itemId'); // Populate item details
+        //.sort({ deliveryDate: -1 }); // Sort by delivery date (most recent first)
+  console.log("history is ",history);
+      res.status(200).json({ history });
+    } catch (error) { 
+      console.error('Error fetching recipient history:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
 
 module.exports = {
     addToCart,
@@ -379,5 +398,6 @@ module.exports = {
     updateRecipientAccount,
     updateRecipientPassword,
     deleteRecipientAccount,
+    recipientHistory,
   
 };
