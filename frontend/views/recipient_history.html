@@ -6,6 +6,61 @@
   <title>History</title>
   <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
   <link rel="stylesheet" href="../css/recipient_dashboard.css">
+  <style>
+    body.modal-active {
+      overflow: hidden;
+      /* filter: blur(2px); */
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .modal-box h2 {
+      margin: 10px 0;
+    }
+
+    .modal-box p {
+      margin: 5px 0;
+    }
+
+    .close-modal {
+      margin-top: 15px;
+      padding: 8px 15px;
+      background: maroon;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -25,120 +80,87 @@
       <h1>Your Requests History</h1>
       <p>Track your past contributions and see the impact you’ve made.</p>
       <div class="search-filter">
-        <input type="text" id="searchInput" placeholder="Search by item name or date">
-        <button id="filterButton">Filter</button>
+        <input id="search-bar" type="text" placeholder="Search by item name or date">
       </div>
-      <table class="history-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Item</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="historyTableBody">
-          <!-- Dynamic content will be injected here -->
-        </tbody>
-      </table>
+      <div class="history-table-wrapper">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Item</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr>
+              <td>2024/10/2</td>
+              <td>Blanket</td>
+              <td class="status-received">Received</td>
+              <td><button class="view-details">View Details</button></td>
+            </tr>
+            <tr>
+              <td>2024/11/5</td>
+              <td>Books</td>
+              <td class="status-pending">Pending</td>
+              <td><button class="view-details">View Details</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
 
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-box">
+      <h2>Item Details</h2>
+      <p id="modal-item"></p>
+      <p id="modal-date"></p>
+      <p id="modal-status"></p>
+      <button class="close-modal">Close</button>
+    </div>
+  </div>
+
   <script>
-    // Replace with dynamic recipient ID from authentication/session
-    // Replace with actual recipient ID from session or authentication
+    // Filter table as user types
+    document.getElementById('search-bar').addEventListener('input', () => {
+      const searchInput = document.getElementById('search-bar').value.toLowerCase();
+      const tableRows = document.querySelectorAll('#table-body tr');
 
-    // Fetch and display donation history
-    async function fetchHistory() {
-      try {
-        const response = await fetch(`/api/recipient/history`);
-        if (!response.ok) throw new Error('Failed to fetch history');
-
-        const { history } = await response.json();
-        const tableBody = document.getElementById('historyTableBody');
-        tableBody.innerHTML = ''; // Clear existing content
-
-        history.forEach(order => {
-          order.items.forEach(item => {
-            const row = document.createElement('tr');
-            // add random date to the row
-            const randomDate = new Date(
-              Math.floor(Math.random() * (new Date() - new Date(1990, 0, 1))) + new Date(1990, 0, 1)
-            ).toLocaleDateString();
-            row.innerHTML = `\
-              <td>${randomDate}</td>
-              <td>${item.itemId.itemName} (${item.quantity})</td>
-              <td class="${getStatusClass(order.deliveryStatus)}">${order.deliveryStatus}</td>
-              <td><button class="view-details" onclick="viewDetails('${order._id}')">View Details</button></td>
-            `;
-            tableBody.appendChild(row);
-          });
-        });
-      } catch (error) {
-        console.error('Error fetching history:', error);
-        alert('Failed to load history. Please try again.');
-      }
-    }
-
-    // Utility to determine status class
-    function getStatusClass(status) {
-      return status === 'Received'
-        ? 'status-received'
-        : status === 'Pending'
-        ? 'status-pending'
-        : status === 'Confirmed'
-        ? 'status-confirmed'
-        : 'status-rejected';
-    }
-
-    // Example function for viewing details (extend as needed)
-    function viewDetails(orderId) {
-      alert(`Viewing details for order ID: ${orderId}`);
-      // You can redirect to a details page or show a modal here
-    }
-
-    // Search/filter functionality
-    document.getElementById('filterButton').addEventListener('click', () => {
-      const searchInput = document.getElementById('searchInput').value.toLowerCase();
-      const rows = document.querySelectorAll('#historyTableBody tr');
-
-      rows.forEach(row => {
-        const itemName = row.cells[1].textContent.toLowerCase();
-        const date = row.cells[0].textContent.toLowerCase();
-        row.style.display =
-          itemName.includes(searchInput) || date.includes(searchInput) ? '' : 'none';
+      tableRows.forEach(row => {
+        const date = row.cells[0].innerText.toLowerCase();
+        const item = row.cells[1].innerText.toLowerCase();
+        if (date.includes(searchInput) || item.includes(searchInput)) {
+          row.classList.remove('hidden');
+        } else {
+          row.classList.add('hidden');
+        }
       });
     });
 
-    // Logout functionality
-    document.getElementById('logoutButton').addEventListener('click', () => {
-      //logout user by fetching api of logout
-      fetch('/api/recipient/logout', {
-        method: 'GET',
-        credentials:'same-origin' // Ensure cookies are sent with the request
-      })
-       .then(response => {
-          if (!response.ok) throw new Error('Failed to log out');
-          return response.json();
-        })
-       .then(data => {
-          console.log('Logged out:', data);
-          alert('Logged out successfully');
-          window.location.href = 'index.html'; // Redirect to login page
-        })
-       .catch(error => {
-          console.error('Error logging out:', error);
-          alert('Failed to log out. Please try again.');
-        });
+    // Show modal with item details
+    document.querySelectorAll('.view-details').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const row = event.target.closest('tr');
+        const date = row.cells[0].innerText;
+        const item = row.cells[1].innerText;
+        const status = row.cells[2].innerText;
 
-      // Redirect to login page or logout page as needed
-      // For example, redirect to index.html or clear session data
-      
-      
+        document.getElementById('modal-item').innerText = `Item Name: ${item}`;
+        document.getElementById('modal-date').innerText = `Date: ${date}`;
+        document.getElementById('modal-status').innerText = `Status: ${status}`;
+
+        document.getElementById('modal').classList.add('active');
+        document.body.classList.add('modal-active');
+      });
     });
 
-    // Initial fetch
-    fetchHistory();
+    // Close modal
+    document.querySelector('.close-modal').addEventListener('click', () => {
+      document.getElementById('modal').classList.remove('active');
+      document.body.classList.remove('modal-active');
+    });
   </script>
 </body>
 </html>

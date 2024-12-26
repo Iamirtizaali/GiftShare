@@ -6,15 +6,15 @@
   }
   
   body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     background-color: #f4f4f9;
     color: #333;
   }
   
   /* Navbar */
   .navbar {
-    background: #34495e;
-    color: #ecf0f1;
+    /* background: #34495e; */
+    color: #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,7 +22,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
   }
   
   .navbar-logo {

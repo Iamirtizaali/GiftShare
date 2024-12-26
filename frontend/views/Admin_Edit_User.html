@@ -5,126 +5,133 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit User</title>
   <link rel="stylesheet" href="../css/Admin_Edit_User.css">
-<style>
+  <style>
+    /* General Reset */
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      
-      body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        min-height: 100vh;
-      }
-      
-      .container {
-        display: flex;
-        width: 100%;
-      }
-      
-      .sidebar {
-        width: 240px;
-        background-color: #2c3e50;
-        color: white;
-        padding: 20px;
-      }
-      
-      .sidebar .logo {
-        font-size: 24px;
-        margin-bottom: 30px;
-      }
-      
-      .sidebar nav ul {
-        list-style: none;
-      }
-      
-      .sidebar nav ul li {
-        margin: 15px 0;
-      }
-      
-      .sidebar nav ul li a {
-        text-decoration: none;
-        color: white;
-        font-size: 18px;
-      }
-      
-      .sidebar nav ul li a:hover,
-      .sidebar nav ul li a.active {
-        color: #16a085;
-      }
-      
-      main {
-        flex: 1;
-        background-color: #ecf0f1;
-        padding: 20px;
-      }
-      
-      .navbar {
-        background-color: #34495e;
-        color: white;
-        padding: 10px 20px;
-        margin-bottom: 20px;
-      }
-      
-      .navbar h1 {
-        font-size: 24px;
-      }
-      
-      .edit-user-form {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      
-      .edit-user-form form {
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .edit-user-form div {
-        margin-bottom: 15px;
-      }
-      
-      .edit-user-form label {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-      
-      .edit-user-form input {
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      
-      .edit-user-form input:focus {
-        border-color: #16a085;
-        outline: none;
-      }
-      
-      .edit-user-form button {
-        padding: 10px 20px;
-        background-color: #16a085;
-        color: white;
-        font-size: 16px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      
-      .edit-user-form button:hover {
-        background-color: #1abc9c;
-      }
-      
-      .edit-user-form button:focus {
-        outline: none;
-      }
-      
-</style>
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      background-color: #f4f4f9;
+      color: #333;
+    }
 
+    .container {
+      display: flex;
+      min-height: 100vh; /* Ensures the container spans the full viewport height */
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      height: 100vh; /* Makes the sidebar span the full height of the viewport */
+    }
+
+    .sidebar .logo {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+    }
+
+    .sidebar nav ul li {
+      margin: 10px 0;
+    }
+
+    .sidebar nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .sidebar nav ul li a:hover,
+    .sidebar nav ul li a.active {
+      background-color: #FFC107;
+      color: #fff;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #34495e;
+      color: white;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+    }
+
+    .edit-user-form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .edit-user-form form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edit-user-form div {
+      margin-bottom: 15px;
+    }
+
+    .edit-user-form label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .edit-user-form input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .edit-user-form input:focus {
+      border-color: #16a085;
+      outline: none;
+      box-shadow: 0 0 5px rgba(22, 160, 133, 0.5);
+    }
+
+    .edit-user-form button {
+      padding: 10px 20px;
+      background-color: #16a085;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .edit-user-form button:hover {
+      background-color: #1abc9c;
+      transform: scale(1.05);
+    }
+
+    .edit-user-form button:focus {
+      outline: none;
+    }
+  </style>
 </head>
 <body>
   <div class="container">

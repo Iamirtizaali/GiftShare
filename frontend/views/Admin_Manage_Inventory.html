@@ -4,7 +4,125 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Inventory</title>
-  <link rel="stylesheet" href="../css/Admin_Manage_Inventiry.css">
+  <link rel="stylesheet" href="../css/Admin_Manage_Inventory.css">
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh; /* Ensure the container spans the full viewport height */
+      height: 500vh; /* Ensure it stretches fully vertically */
+    }
+
+    .sidebar {
+    width: 250px;
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+  }
+  
+  .sidebar nav ul li {
+    margin: 10px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .sidebar nav ul li a.active,
+  .sidebar nav ul li a:hover {
+    background: #f39c12;
+    color: #fff;
+  }
+
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #495057;
+      color: white;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .inventory-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+      gap: 20px;
+    }
+
+    .inventory-item {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .inventory-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .inventory-item h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+
+    .inventory-item p {
+      margin: 5px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .btn-action {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 4px;
+      text-align: center;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn-action:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -13,12 +131,12 @@
       <div class="logo">GiftShare</div>
       <nav>
         <ul>
-            <li><a href="Admin_Dashboard.html">Dashboard</a></li>
-            <li><a href="Admin_manage_users.html">Manage Users</a></li>
-            <li><a href="#" class="active">Manage Inventory</a></li>
-            <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
-            <li><a href="Admin_Report.html">Reports</a></li>
-            <li><a href="Admin_Setting.html">Settings</a></li>
+          <li><a href="Admin_Dashboard.html">Dashboard</a></li>
+          <li><a href="Admin_manage_users.html">Manage Users</a></li>
+          <li><a href="#" class="active">Manage Inventory</a></li>
+          <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
+          <li><a href="Admin_Report.html">Reports</a></li>
+          <li><a href="Admin_Setting.html">Settings</a></li>
         </ul>
       </nav>
     </aside>
