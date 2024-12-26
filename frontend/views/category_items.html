@@ -249,6 +249,7 @@
             <img src="/images/${item.images[0]}" alt="${item.itemName}">
             <span>${item.itemName}</span>
             <p>${item.description}</p>
+            <p>${item.quantity} items Available</p>
             <input type="number" min="1" value="1" class="quantity" data-id="${item._id}">
             <button class="add-to-cart" data-id="${item._id}" data-name="${item.itemName}">Add to Cart</button>
           `;

@@ -65,7 +65,7 @@
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Role</th>
               <th>Name</th>
               <th>Email</th>
               <th>Action</th>
@@ -103,34 +103,22 @@
         const usersTableBody = document.getElementById("usersTableBody");
         usersTableBody.innerHTML = ""; // Clear any existing rows
 
-        users.forEach(user => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${user._id}</td>
-            <td>${user.name}</td>
-            <td>${user.email}</td>
-            <td><a href="Admin_Edit_User.html?id=${user._id}" class="btn-action">Edit</a></td>
-          `;
-          usersTableBody.appendChild(row);
-        });
+          users.forEach(user => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${user._id}</td>
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td><a href="Admin_Edit_User.html?id=${user._id}" class="btn-action">Edit</a></td>
+            `;
+            usersTableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
       }
 
-      // Filter users based on search input
-      function filterUsers(query) {
-        const filteredUsers = usersData.filter(user =>
-          user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query)
-        );
-        displayUsers(filteredUsers); // Display filtered users
-      }
-
-      // Add event listener to search input
-      const searchInput = document.getElementById("searchInput");
-      searchInput.addEventListener("input", () => {
-        const query = searchInput.value.trim().toLowerCase(); // Get search query
-        filterUsers(query); // Filter users based on query
-      });
-
-      fetchUsers(); // Initial fetch
+      fetchUsers();
     });
   </script>
 </body>

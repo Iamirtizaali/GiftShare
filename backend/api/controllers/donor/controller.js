@@ -344,3 +344,14 @@ exports.getUserData = async (req, res) => {
       res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.history= async (req, res) => {
+  try {
+      const donorId = req.user._id; // Assuming donor ID is available in `req.user`
+      const history = await OrdersToDeliver.find({ donorId }).sort({ deliveryDate: -1 });
+      res.status(200).json({ history });
+  } catch (error) {
+      console.error('Error fetching donation history:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};

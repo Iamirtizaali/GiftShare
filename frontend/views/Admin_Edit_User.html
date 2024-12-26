@@ -3,128 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit User</title>
-  <link rel="stylesheet" href="../css/Admin_Edit_User.css">
-<style>
+  <title>Manage Users</title>
+  <link rel="stylesheet" href="../css/Admin_manage_users.css">
+  <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-      }
-      
-      body {
+    }
+
+    body {
         font-family: Arial, sans-serif;
         display: flex;
         min-height: 100vh;
-      }
-      
-      .container {
+    }
+
+    .container {
         display: flex;
         width: 100%;
-      }
-      
-      .sidebar {
+    }
+
+    .sidebar {
         width: 240px;
         background-color: #2c3e50;
         color: white;
         padding: 20px;
-      }
-      
-      .sidebar .logo {
+    }
+
+    .sidebar .logo {
         font-size: 24px;
         margin-bottom: 30px;
-      }
-      
-      .sidebar nav ul {
+    }
+
+    .sidebar nav ul {
         list-style: none;
-      }
-      
-      .sidebar nav ul li {
+    }
+
+    .sidebar nav ul li {
         margin: 15px 0;
-      }
-      
-      .sidebar nav ul li a {
+    }
+
+    .sidebar nav ul li a {
         text-decoration: none;
         color: white;
         font-size: 18px;
-      }
-      
-      .sidebar nav ul li a:hover,
-      .sidebar nav ul li a.active {
-        color: #16a085;
-      }
-      
-      main {
+    }
+
+    .sidebar nav ul li a:hover,
+    .sidebar nav ul li a.active {
+        color: #fff;
+    }
+
+    main {
         flex: 1;
         background-color: #ecf0f1;
         padding: 20px;
-      }
-      
-      .navbar {
-        background-color: #34495e;
-        color: white;
-        padding: 10px 20px;
+    }
+
+    .search-bar-container {
         margin-bottom: 20px;
-      }
-      
-      .navbar h1 {
-        font-size: 24px;
-      }
-      
-      .edit-user-form {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      
-      .edit-user-form form {
         display: flex;
-        flex-direction: column;
-      }
-      
-      .edit-user-form div {
-        margin-bottom: 15px;
-      }
-      
-      .edit-user-form label {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-      
-      .edit-user-form input {
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-bar-container input[type="text"] {
         padding: 10px;
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 4px;
-      }
-      
-      .edit-user-form input:focus {
+        width: 300px;
+    }
+
+    .search-bar-container input[type="text"]:focus {
         border-color: #16a085;
         outline: none;
-      }
-      
-      .edit-user-form button {
-        padding: 10px 20px;
+    }
+
+    .search-bar-container button {
+        padding: 10px 15px;
         background-color: #16a085;
         color: white;
         font-size: 16px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-      }
-      
-      .edit-user-form button:hover {
+    }
+
+    .search-bar-container button:hover {
         background-color: #1abc9c;
-      }
-      
-      .edit-user-form button:focus {
-        outline: none;
-      }
-      
-</style>
+    }
 
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
+    table th, table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #34495e;
+        color: white;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -134,7 +125,7 @@
       <nav>
         <ul>
           <li><a href="Admin_Dashboard.html">Dashboard</a></li>
-          <li><a href="Admin_manage_users.html">Manage Users</a></li>
+          <li><a href="Admin_manage_users.html" class="active">Manage Users</a></li>
           <li><a href="Admin_Manage_Inventory.html">Manage Inventory</a></li>
           <li><a href="Admin_Manage_Request.html">Manage Requests</a></li>
           <li><a href="Admin_Report.html">Reports</a></li>
@@ -145,86 +136,72 @@
 
     <!-- Main Content -->
     <main>
-      <header class="navbar">
-        <h1>Edit User</h1>
-      </header>
+      <div class="search-bar-container">
+        <input type="text" id="searchInput" placeholder="Search by Name or Email">
+      </div>
+
       <section class="edit-user-form">
-        <form id="editUserForm">
-          <div>
-            <label for="userName">Name</label>
-            <input type="text" id="userName" name="userName" required>
-          </div>
-          <div>
-            <label for="userEmail">Email</label>
-            <input type="email" id="userEmail" name="userEmail" required>
-          </div>
-          <div>
-            <label for="userPhone">Phone</label>
-            <input type="text" id="userPhone" name="userPhone">
-          </div>
-          <div>
-            <label for="userAddress">Address</label>
-            <input type="text" id="userAddress" name="userAddress">
-          </div>
-          <button type="submit">Save Changes</button>
-        </form>
+        <table id="userTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic rows will be added here -->
+          </tbody>
+        </table>
       </section>
     </main>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
-      const userId = new URLSearchParams(window.location.search).get('id');
-      const apiEndpoint = `http://localhost:4000/api/admin/update-user/${userId}`;
+      const searchInput = document.getElementById("searchInput");
+      const userTableBody = document.querySelector("#userTable tbody");
+      let users = [];
 
-      // Fetch user data and populate the form
-      async function fetchUserData() {
+      // Fetch all users from API
+      async function fetchUsers() {
         try {
-          const response = await fetch(apiEndpoint);
-          const user = await response.json();
-
-          if (user) {
-            document.getElementById("userName").value = user.name;
-            document.getElementById("userEmail").value = user.email;
-            document.getElementById("userPhone").value = user.phone || '';
-            document.getElementById("userAddress").value = user.address || '';
-          }
+          const response = await fetch("http://localhost:4000/api/admin/users");
+          users = await response.json();
+          displayUsers(users);
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error("Error fetching users:", error);
         }
       }
 
-      // Update user data
-      document.getElementById("editUserForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
+      // Display users in the table
+      function displayUsers(users) {
+        userTableBody.innerHTML = "";
+        users.forEach(user => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.phone || "N/A"}</td>
+            <td>${user.address || "N/A"}</td>
+          `;
+          userTableBody.appendChild(row);
+        });
+      }
 
-        const updatedData = {
-          name: document.getElementById("userName").value,
-          email: document.getElementById("userEmail").value,
-          phone: document.getElementById("userPhone").value,
-          address: document.getElementById("userAddress").value,
-        };
-
-        try {
-          const response = await fetch(apiEndpoint, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedData),
-          });
-
-          const data = await response.json();
-          if (response.ok) {
-            alert("User updated successfully!");
-            window.location.href = "Admin_manage_users.html"; // Redirect back to Manage Users page
-          } else {
-            alert(data.message || "Failed to update user.");
-          }
-        } catch (error) {
-          console.error("Error updating user data:", error);
-        }
+      // Filter users based on search input
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredUsers = users.filter(user =>
+          user.name.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query)
+        );
+        displayUsers(filteredUsers);
       });
 
-      fetchUserData();
+      // Fetch and display users on page load
+      fetchUsers();
     });
   </script>
 </body>
