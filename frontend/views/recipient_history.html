@@ -6,6 +6,61 @@
   <title>History</title>
   <link rel="icon" href="../Images/Gift Share Logo (2).png" type="image/x-icon">
   <link rel="stylesheet" href="../css/recipient_dashboard.css">
+  <style>
+    body.modal-active {
+      overflow: hidden;
+      /* filter: blur(2px); */
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .modal-box h2 {
+      margin: 10px 0;
+    }
+
+    .modal-box p {
+      margin: 5px 0;
+    }
+
+    .close-modal {
+      margin-top: 15px;
+      padding: 8px 15px;
+      background: maroon;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -25,34 +80,87 @@
       <h1>Your Requests History</h1>
       <p>Track your past contributions and see the impact you’ve made.</p>
       <div class="search-filter">
-        <input type="text" placeholder="Search by item name or date">
-        <button>Filter</button>
+        <input id="search-bar" type="text" placeholder="Search by item name or date">
       </div>
-      <table class="history-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Item</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>2024/10/2</td>
-            <td>Blanket</td>
-            <td class="status-received">Received</td>
-            <td><button class="view-details">View Details</button></td>
-          </tr>
-          <tr>
-            <td>2024/11/5</td>
-            <td>Books</td>
-            <td class="status-pending">Pending</td>
-            <td><button class="view-details">View Details</button></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="history-table-wrapper">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Item</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr>
+              <td>2024/10/2</td>
+              <td>Blanket</td>
+              <td class="status-received">Received</td>
+              <td><button class="view-details">View Details</button></td>
+            </tr>
+            <tr>
+              <td>2024/11/5</td>
+              <td>Books</td>
+              <td class="status-pending">Pending</td>
+              <td><button class="view-details">View Details</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-box">
+      <h2>Item Details</h2>
+      <p id="modal-item"></p>
+      <p id="modal-date"></p>
+      <p id="modal-status"></p>
+      <button class="close-modal">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Filter table as user types
+    document.getElementById('search-bar').addEventListener('input', () => {
+      const searchInput = document.getElementById('search-bar').value.toLowerCase();
+      const tableRows = document.querySelectorAll('#table-body tr');
+
+      tableRows.forEach(row => {
+        const date = row.cells[0].innerText.toLowerCase();
+        const item = row.cells[1].innerText.toLowerCase();
+        if (date.includes(searchInput) || item.includes(searchInput)) {
+          row.classList.remove('hidden');
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+    });
+
+    // Show modal with item details
+    document.querySelectorAll('.view-details').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const row = event.target.closest('tr');
+        const date = row.cells[0].innerText;
+        const item = row.cells[1].innerText;
+        const status = row.cells[2].innerText;
+
+        document.getElementById('modal-item').innerText = `Item Name: ${item}`;
+        document.getElementById('modal-date').innerText = `Date: ${date}`;
+        document.getElementById('modal-status').innerText = `Status: ${status}`;
+
+        document.getElementById('modal').classList.add('active');
+        document.body.classList.add('modal-active');
+      });
+    });
+
+    // Close modal
+    document.querySelector('.close-modal').addEventListener('click', () => {
+      document.getElementById('modal').classList.remove('active');
+      document.body.classList.remove('modal-active');
+    });
+  </script>
 </body>
 </html>

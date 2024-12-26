@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Users</title>
   <link rel="stylesheet" href="../css/Admin_manage_users.css">
+  <style>
+    /* Styling the search bar section */
+    .search-bar {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    #searchInput {
+      width: 50%;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: #5c6bc0;
+      /* A soft blue color for focus */
+      box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3);
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <!-- Sidebar -->
@@ -28,6 +54,13 @@
       <header class="navbar">
         <h1>Manage Users</h1>
       </header>
+
+      <!-- Search Bar -->
+      <section class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by Name or Email">
+      </section>
+
+      <!-- Users Table -->
       <section class="user-table">
         <table>
           <thead>
@@ -49,6 +82,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       const apiEndpoint = "http://localhost:4000/api/admin/users"; // API endpoint to get users data
+      let usersData = []; // To store the fetched users data
 
       // Fetch and populate users table
       async function fetchUsers() {
@@ -57,28 +91,48 @@
             method: 'GET',
             credentials: 'include', // Send cookies with request
           });
-          const users = await response.json();
-
-          const usersTableBody = document.getElementById("usersTableBody");
-          usersTableBody.innerHTML = ""; // Clear any existing rows
-
-          users.forEach(user => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-              <td>${user._id}</td>
-              <td>${user.name}</td>
-              <td>${user.email}</td>
-              <td><a href="Admin_Edit_User.html?id=${user._id}" class="btn-action">Edit</a></td>
-            `;
-            usersTableBody.appendChild(row);
-          });
+          usersData = await response.json(); // Save fetched data to usersData
+          displayUsers(usersData); // Display all users initially
         } catch (error) {
           console.error("Error fetching users:", error);
         }
       }
 
-      fetchUsers();
+      // Display users in the table
+      function displayUsers(users) {
+        const usersTableBody = document.getElementById("usersTableBody");
+        usersTableBody.innerHTML = ""; // Clear any existing rows
+
+        users.forEach(user => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${user._id}</td>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td><a href="Admin_Edit_User.html?id=${user._id}" class="btn-action">Edit</a></td>
+          `;
+          usersTableBody.appendChild(row);
+        });
+      }
+
+      // Filter users based on search input
+      function filterUsers(query) {
+        const filteredUsers = usersData.filter(user =>
+          user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query)
+        );
+        displayUsers(filteredUsers); // Display filtered users
+      }
+
+      // Add event listener to search input
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase(); // Get search query
+        filterUsers(query); // Filter users based on query
+      });
+
+      fetchUsers(); // Initial fetch
     });
   </script>
 </body>
+
 </html>
