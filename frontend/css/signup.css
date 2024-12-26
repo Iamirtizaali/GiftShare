@@ -77,7 +77,7 @@ form input {
 }
 
 
-.login-button {
+.submit-button {
     width: 80%;
     height: 40px;
     margin-left: 30px;
@@ -92,17 +92,17 @@ form input {
     font-family: 'Times New Roman', Times, serif;
 }
 
-.login-button {
+.submit-button {
     background: #038C29;
     color: white;
 }
 
-.login-button:hover {
+.submit-button:hover {
     color: #038C29;
     font-weight: bolder;
 }
 
-.login-button:after {
+.submit-button:after {
     content: "";
     background: white;
     position: absolute;
@@ -115,7 +115,7 @@ form input {
     transition: all 0.5s;
 }
 
-.login-button:hover:after {
+.submit-button:hover:after {
     transform: skewX(-45deg) scale(1, 1);
     -webkit-transition: all 0.5s;
     transition: all 1s;
