@@ -65,7 +65,7 @@
         <table>
           <thead>
             <tr>
-              <th>Role</th>
+              <th>ID</th>
               <th>Name</th>
               <th>Email</th>
               <th>Action</th>
@@ -91,6 +91,7 @@
             method: 'GET',
             credentials: 'include', // Send cookies with request
           });
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           usersData = await response.json(); // Save fetched data to usersData
           displayUsers(usersData); // Display all users initially
         } catch (error) {
@@ -103,20 +104,32 @@
         const usersTableBody = document.getElementById("usersTableBody");
         usersTableBody.innerHTML = ""; // Clear any existing rows
 
-          users.forEach(user => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        users.forEach((user) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
               <td>${user._id}</td>
               <td>${user.name}</td>
               <td>${user.email}</td>
               <td><a href="Admin_Edit_User.html?id=${user._id}" class="btn-action">Edit</a></td>
             `;
-            usersTableBody.appendChild(row);
-          });
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        }
+          usersTableBody.appendChild(row);
+        });
       }
+
+      // Filter and display users based on search input
+      function filterUsers(query) {
+        const filteredUsers = usersData.filter((user) =>
+          user.name.toLowerCase().includes(query.toLowerCase()) ||
+          user.email.toLowerCase().includes(query.toLowerCase())
+        );
+        displayUsers(filteredUsers); // Display only the filtered users
+      }
+
+      // Add event listener for the search input
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("input", (event) => {
+        filterUsers(event.target.value); // Filter users as the user types
+      });
 
       fetchUsers();
     });
