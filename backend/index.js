@@ -12,7 +12,7 @@ const { Server } = require("socket.io");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const cookieParser = require('cookie-parser');
-const stripe = require('stripe')("sk_test_51PdoPmRsi25iz5JVRePIfmgFPa9Xg6zZka6DCLBQVKbc2HQI0Ni9EKuVJuZDsNU1wiB5Vjp5rhcKa8NXustJz6SC00G5ww7IUZ");
+const stripe = require('stripe')("");
 // Add CORS middleware
 app.use(cors({ origin: "*" })); // Configure CORS with options dfsd
 //app.use(fileUpload());
